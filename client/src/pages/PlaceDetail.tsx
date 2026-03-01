@@ -276,9 +276,7 @@ export default function PlaceDetail() {
                 <MapPin className="w-4 h-4" /> Location
               </div>
             </h2>
-            <p className="text-sm text-foreground">{place.address}</p>
-            <p className="text-sm text-muted-foreground">{place.town}</p>
-            <p className="text-sm font-medium text-foreground">{place.postcode}</p>
+            <p className="text-sm text-muted-foreground">{place.address}, {place.town}, {place.postcode}</p>
             <a
               data-testid="link-directions"
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.address} ${place.postcode}`)}`}
