@@ -41,6 +41,7 @@ const POLICY_LABELS: Record<string, string> = {
   dogs_inside: "Dogs Welcome Inside",
   dogs_outside: "Dogs Welcome Outside",
   dogs_both: "Fully Dog Friendly (Inside & Outside)",
+  dogs_hotel_only: "Dogs Welcome in Hotel Only",
 };
 
 const DAY_LABELS: Record<DayOfWeek, string> = {
@@ -85,6 +86,7 @@ export default function PlaceForm() {
       postcode: "",
       category: [],
       description: "",
+      importantInfo: "",
       phone: "",
       website: "",
       imageUrl: "",
@@ -110,6 +112,7 @@ export default function PlaceForm() {
         postcode: existing.postcode,
         category: existing.category,
         description: existing.description,
+        importantInfo: existing.importantInfo ?? "",
         phone: existing.phone ?? "",
         website: existing.website ?? "",
         imageUrl: existing.imageUrl ?? "",
@@ -243,6 +246,23 @@ export default function PlaceForm() {
                   <FormControl>
                     <Textarea data-testid="input-description" placeholder="Describe the place and its dog-friendliness…" rows={3} {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+
+              <FormField control={form.control} name="importantInfo" render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-destructive font-semibold">⚠ Important Information <span className="font-normal text-muted-foreground">(optional)</span></FormLabel>
+                  <FormControl>
+                    <Textarea
+                      data-testid="input-important-info"
+                      placeholder="e.g. Dogs permitted in garden only. Not allowed inside during food service hours."
+                      rows={3}
+                      maxLength={300}
+                      {...field}
+                    />
+                  </FormControl>
+                  <p className="text-xs text-muted-foreground">{(field.value ?? "").length}/300 characters</p>
                   <FormMessage />
                 </FormItem>
               )} />

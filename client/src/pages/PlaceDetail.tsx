@@ -60,6 +60,7 @@ const policyColors: Record<string, string> = {
   dogs_inside: "bg-primary/10 text-primary dark:bg-primary/20",
   dogs_outside: "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300",
   dogs_both: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300",
+  dogs_hotel_only: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
 };
 
 
@@ -211,6 +212,18 @@ export default function PlaceDetail() {
             <h2 className="font-semibold text-base mb-2">About</h2>
             <p className="text-muted-foreground leading-relaxed">{place.description}</p>
           </div>
+
+          {place.importantInfo && (
+            <div
+              data-testid="section-important-info"
+              className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-xl p-4"
+            >
+              <h2 className="font-semibold text-sm uppercase tracking-wide text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
+                <span>⚠</span> Important Information
+              </h2>
+              <p className="text-sm text-red-800 dark:text-red-300 leading-relaxed">{place.importantInfo}</p>
+            </div>
+          )}
 
           {place.openingHours && (
             <div className="bg-card border border-card-border rounded-xl p-5">

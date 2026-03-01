@@ -22,6 +22,7 @@ const policyColors: Record<string, string> = {
   dogs_inside: "bg-primary/10 text-primary dark:bg-primary/20",
   dogs_outside: "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300",
   dogs_both: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300",
+  dogs_hotel_only: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
 };
 
 interface PlaceCardProps {

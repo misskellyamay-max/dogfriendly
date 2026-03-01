@@ -32,6 +32,7 @@ export const DOG_POLICIES = [
   "dogs_inside",
   "dogs_outside",
   "dogs_both",
+  "dogs_hotel_only",
 ] as const;
 export type DogPolicy = typeof DOG_POLICIES[number];
 
@@ -77,6 +78,7 @@ export const places = pgTable("places", {
   website: text("website"),
   imageUrl: text("image_url"),
   dogPolicy: text("dog_policy").notNull().$type<DogPolicy>(),
+  importantInfo: text("important_info"),
   waterBowls: boolean("water_bowls").default(false),
   dogTreats: boolean("dog_treats").default(false),
   dogMenu: boolean("dog_menu").default(false),

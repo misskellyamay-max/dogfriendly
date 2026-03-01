@@ -48,8 +48,8 @@ function parseCSV(text: string): ParsedRow[] {
     if (!row["longitude"] || isNaN(Number(row["longitude"]))) row._errors.push("valid longitude is required");
     if (!row["category"]) row._errors.push("category is required");
     if (!row["description"]) row._errors.push("description is required");
-    if (!["dogs_inside", "dogs_outside", "dogs_both"].includes(row["dogPolicy"])) {
-      row._errors.push("dogPolicy must be dogs_inside, dogs_outside, or dogs_both");
+    if (!["dogs_inside", "dogs_outside", "dogs_both", "dogs_hotel_only"].includes(row["dogPolicy"])) {
+      row._errors.push("dogPolicy must be dogs_inside, dogs_outside, dogs_both, or dogs_hotel_only");
     }
 
     rows.push(row);
@@ -199,7 +199,7 @@ export default function AdminImport() {
           <div className="bg-muted/40 rounded-lg p-4 text-sm space-y-1">
             <p className="font-medium text-foreground">CSV column guide</p>
             <p className="text-muted-foreground"><strong>category</strong>: separate multiple with a semicolon e.g. <code>pub;cafe</code></p>
-            <p className="text-muted-foreground"><strong>dogPolicy</strong>: one of <code>dogs_inside</code>, <code>dogs_outside</code>, <code>dogs_both</code></p>
+            <p className="text-muted-foreground"><strong>dogPolicy</strong>: one of <code>dogs_inside</code>, <code>dogs_outside</code>, <code>dogs_both</code>, <code>dogs_hotel_only</code></p>
             <p className="text-muted-foreground"><strong>waterBowls / dogTreats / dogMenu</strong>: <code>true</code> or <code>false</code></p>
             <p className="text-muted-foreground"><strong>address2, phone, website, imageUrl</strong>: optional — leave blank if not applicable</p>
           </div>

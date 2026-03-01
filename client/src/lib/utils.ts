@@ -25,6 +25,7 @@ export function dogPolicyLabel(policy: DogPolicy): string {
     dogs_inside: "Dogs Welcome Inside",
     dogs_outside: "Dogs Welcome Outside",
     dogs_both: "Fully Dog Friendly",
+    dogs_hotel_only: "Dogs Welcome in Hotel Only",
   };
   return labels[policy] ?? policy;
 }
