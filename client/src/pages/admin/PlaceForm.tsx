@@ -80,6 +80,7 @@ export default function PlaceForm() {
     defaultValues: {
       name: "",
       address: "",
+      address2: "",
       town: "",
       postcode: "",
       category: [],
@@ -104,6 +105,7 @@ export default function PlaceForm() {
       form.reset({
         name: existing.name,
         address: existing.address,
+        address2: existing.address2 ?? "",
         town: existing.town,
         postcode: existing.postcode,
         category: existing.category,
@@ -254,6 +256,16 @@ export default function PlaceForm() {
                   <FormLabel>Street Address *</FormLabel>
                   <FormControl>
                     <Input data-testid="input-address" placeholder="e.g. 12 High Street" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+
+              <FormField control={form.control} name="address2" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address Line 2 <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                  <FormControl>
+                    <Input data-testid="input-address2" placeholder="e.g. Stanton Business Park" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

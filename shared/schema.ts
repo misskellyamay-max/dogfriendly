@@ -68,6 +68,7 @@ export const places = pgTable("places", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   address: text("address").notNull(),
+  address2: text("address2"),
   town: text("town").notNull(),
   postcode: text("postcode").notNull(),
   category: text("category").array().notNull().$type<PlaceCategory[]>(),

@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useAdmin } from "@/hooks/useAdmin";
 import type { Place } from "@shared/schema";
-import { PlusCircle, Pencil, Trash2, LogOut } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, LogOut, Upload } from "lucide-react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   restaurant: "Restaurant",
@@ -67,6 +67,12 @@ export default function AdminPlaces() {
           <p className="text-sm text-muted-foreground">Manage dog-friendly listings</p>
         </div>
         <div className="flex items-center gap-3">
+          <Link href="/admin/import">
+            <Button data-testid="button-import-csv" variant="outline">
+              <Upload className="w-4 h-4 mr-2" />
+              Import CSV
+            </Button>
+          </Link>
           <Link href="/admin/places/new">
             <Button data-testid="button-add-place" style={{ backgroundColor: "#ff9900", color: "white" }}>
               <PlusCircle className="w-4 h-4 mr-2" />

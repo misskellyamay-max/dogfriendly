@@ -9,6 +9,7 @@ import PlaceDetail from "@/pages/PlaceDetail";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminPlaces from "@/pages/admin/AdminPlaces";
 import PlaceForm from "@/pages/admin/PlaceForm";
+import AdminImport from "@/pages/admin/AdminImport";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/admin" component={AdminLogin} />
       <Route path="/admin/places" component={AdminPlaces} />
       <Route path="/admin/places/new" component={PlaceForm} />
+      <Route path="/admin/import" component={AdminImport} />
       <Route path="/admin/places/:id/edit" component={PlaceForm} />
       <Route component={NotFound} />
     </Switch>

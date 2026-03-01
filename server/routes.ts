@@ -132,5 +132,31 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/admin/places/bulk", requireAdmin, async (req, res) => {
+    try {
+      const rows: unknown[] = Array.isArray(req.body?.places) ? req.body.places : [];
+      let created = 0;
+      const errors: { row: number; message: string }[] = [];
+
+      for (let i = 0; i < rows.length; i++) {
+        const result = insertPlaceSchema.safeParse(rows[i]);
+        if (!result.success) {
+          errors.push({ row: i + 1, message: result.error.errors.map(e => e.message).join("; ") });
+          continue;
+        }
+        try {
+          await storage.createPlace(result.data);
+          created++;
+        } catch {
+          errors.push({ row: i + 1, message: "Database error inserting row" });
+        }
+      }
+
+      res.status(201).json({ created, errors });
+    } catch (err) {
+      res.status(500).json({ error: "Bulk import failed" });
+    }
+  });
+
   return httpServer;
 }

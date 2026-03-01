@@ -153,7 +153,7 @@ export default function PlaceDetail() {
             <h1 data-testid="text-place-name" className="text-2xl md:text-3xl font-bold mb-2">{place.name}</h1>
             <div className="flex items-center gap-2 text-muted-foreground mb-3">
               <MapPin className="w-4 h-4 flex-shrink-0" />
-              <span>{place.address}, {place.town}, {place.postcode}</span>
+              <span>{place.address}{place.address2 ? `, ${place.address2}` : ""}, {place.town}, {place.postcode}</span>
             </div>
           </div>
 
@@ -276,7 +276,7 @@ export default function PlaceDetail() {
                 <MapPin className="w-4 h-4" /> Location
               </div>
             </h2>
-            <p className="text-sm text-muted-foreground">{place.address}, {place.town}, {place.postcode}</p>
+            <p className="text-sm text-muted-foreground">{place.address}{place.address2 ? `, ${place.address2}` : ""}, {place.town}, {place.postcode}</p>
             <a
               data-testid="link-directions"
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.address} ${place.postcode}`)}`}
