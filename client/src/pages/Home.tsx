@@ -158,7 +158,7 @@ export default function Home() {
                   placeholder="Town, city or postcode..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  className="pl-9 pr-4 h-11 bg-background text-foreground placeholder:text-muted-foreground border-border"
+                  className="pl-9 pr-4 h-11 bg-background text-foreground placeholder:text-muted-foreground border-border rounded-full"
                 />
               </div>
               <Button
