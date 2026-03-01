@@ -3,12 +3,11 @@ import { useParams, Link } from "wouter";
 import type { Place } from "@shared/schema";
 import { DAYS_OF_WEEK } from "@shared/schema";
 import type { DayOfWeek } from "@shared/schema";
-import { dogPolicyLabel, categoryLabel, formatRating } from "@/lib/utils";
+import { dogPolicyLabel, categoryLabel } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowLeft,
-  Star,
   MapPin,
   Phone,
   Globe,
@@ -62,22 +61,6 @@ const policyColors: Record<string, string> = {
   dogs_both: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300",
 };
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Star
-          key={star}
-          className={`w-5 h-5 ${
-            star <= Math.round(rating)
-              ? "fill-amber-400 text-amber-400"
-              : "fill-muted text-muted"
-          }`}
-        />
-      ))}
-    </div>
-  );
-}
 
 function DetailSkeleton() {
   return (
@@ -171,11 +154,6 @@ export default function PlaceDetail() {
             <div className="flex items-center gap-2 text-muted-foreground mb-3">
               <MapPin className="w-4 h-4 flex-shrink-0" />
               <span>{place.address}, {place.town}, {place.postcode}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <StarRating rating={place.rating} />
-              <span className="font-semibold">{formatRating(place.rating)}</span>
-              <span className="text-sm text-muted-foreground">({place.reviewCount} reviews)</span>
             </div>
           </div>
 

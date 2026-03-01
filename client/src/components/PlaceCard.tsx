@@ -1,8 +1,8 @@
 import type { Place } from "@shared/schema";
-import { categoryLabel, dogPolicyLabel, formatRating } from "@/lib/utils";
+import { categoryLabel, dogPolicyLabel } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Star, MapPin, Droplets, Cookie, UtensilsCrossed,
+  MapPin, Droplets, Cookie, UtensilsCrossed,
   Utensils, Coffee, Beer, ShoppingBag, BedDouble, Trees, Waves, Ticket, type LucideIcon
 } from "lucide-react";
 import { Link } from "wouter";
@@ -29,22 +29,6 @@ interface PlaceCardProps {
   distance?: number;
 }
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Star
-          key={star}
-          className={`w-3.5 h-3.5 ${
-            star <= Math.round(rating)
-              ? "fill-amber-400 text-amber-400"
-              : "fill-muted text-muted"
-          }`}
-        />
-      ))}
-    </div>
-  );
-}
 
 export function PlaceCard({ place, distance }: PlaceCardProps) {
   const categories = Array.isArray(place.category) ? place.category : [place.category];
@@ -98,12 +82,6 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
               <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
               <span className="line-clamp-1">{place.town}, {place.postcode}</span>
             </div>
-          </div>
-
-          <div className="flex items-center gap-2 flex-wrap">
-            <StarRating rating={place.rating} />
-            <span className="text-sm font-medium">{formatRating(place.rating)}</span>
-            <span className="text-xs text-muted-foreground">({place.reviewCount})</span>
           </div>
 
           <p className="text-sm text-muted-foreground line-clamp-2 flex-1">{place.description}</p>

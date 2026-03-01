@@ -444,31 +444,6 @@ export default function PlaceForm() {
               )} />
             </section>
 
-            <section className="bg-card border border-border rounded-xl p-5 space-y-4">
-              <h2 className="font-semibold text-foreground">Rating</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <FormField control={form.control} name="rating" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Rating (0–5)</FormLabel>
-                    <FormControl>
-                      <Input data-testid="input-rating" type="number" step="0.1" min="0" max="5" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="reviewCount" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Review Count</FormLabel>
-                    <FormControl>
-                      <Input data-testid="input-review-count" type="number" min="0" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-              </div>
-            </section>
-
             <div className="flex gap-3 justify-end">
               <Link href="/admin/places">
                 <Button type="button" variant="outline">Cancel</Button>
