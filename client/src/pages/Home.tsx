@@ -140,7 +140,7 @@ export default function Home() {
             <img
               src="/houndsabout-logo2.png"
               alt="Houndsabout"
-              className="h-14 md:h-16 w-auto object-contain mix-blend-multiply"
+              className="h-20 md:h-24 w-auto object-contain mix-blend-multiply"
             />
           </div>
           <p className="text-lg md:text-xl font-medium mb-1 text-foreground text-center">Find places that welcome your dog</p>
