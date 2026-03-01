@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import type { Place } from "@shared/schema";
+import { DAYS_OF_WEEK } from "@shared/schema";
+import type { DayOfWeek } from "@shared/schema";
 import { dogPolicyLabel, categoryLabel, formatRating } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,8 +26,24 @@ import {
   Trees,
   Waves,
   Ticket,
+  Clock,
   type LucideIcon,
 } from "lucide-react";
+
+const DAY_LABELS: Record<DayOfWeek, string> = {
+  monday: "Monday",
+  tuesday: "Tuesday",
+  wednesday: "Wednesday",
+  thursday: "Thursday",
+  friday: "Friday",
+  saturday: "Saturday",
+  sunday: "Sunday",
+};
+
+function getTodayKey(): DayOfWeek {
+  const days: DayOfWeek[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  return days[new Date().getDay()];
+}
 
 const categoryIcons: Record<string, LucideIcon> = {
   restaurant: Utensils,
@@ -208,6 +226,35 @@ export default function PlaceDetail() {
             <h2 className="font-semibold text-base mb-2">About</h2>
             <p className="text-muted-foreground leading-relaxed">{place.description}</p>
           </div>
+
+          {place.openingHours && (
+            <div className="bg-card border border-card-border rounded-xl p-5">
+              <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground mb-4 flex items-center gap-2">
+                <Clock className="w-4 h-4" /> Opening Hours
+              </h2>
+              <div className="divide-y divide-border">
+                {DAYS_OF_WEEK.map((day) => {
+                  const hours = place.openingHours![day];
+                  const isToday = getTodayKey() === day;
+                  return (
+                    <div
+                      key={day}
+                      data-testid={`hours-row-${day}`}
+                      className={`flex justify-between items-center py-2 text-sm ${isToday ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                    >
+                      <span className="flex items-center gap-2">
+                        {isToday && <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />}
+                        {DAY_LABELS[day]}
+                      </span>
+                      <span className={hours.closed ? "text-rose-500 dark:text-rose-400 font-medium" : ""}>
+                        {hours.closed ? "Closed" : `${hours.open} – ${hours.close}`}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {(place.phone || place.website) && (
             <div className="bg-card border border-card-border rounded-xl p-5">

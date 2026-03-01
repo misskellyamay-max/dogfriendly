@@ -13,8 +13,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useAdmin } from "@/hooks/useAdmin";
-import { insertPlaceSchema, PLACE_CATEGORIES, DOG_POLICIES } from "@shared/schema";
-import type { Place } from "@shared/schema";
+import { insertPlaceSchema, PLACE_CATEGORIES, DOG_POLICIES, DAYS_OF_WEEK } from "@shared/schema";
+import type { Place, DayOfWeek, OpeningHours } from "@shared/schema";
 import { ArrowLeft } from "lucide-react";
 
 const formSchema = insertPlaceSchema.extend({
@@ -41,6 +41,26 @@ const POLICY_LABELS: Record<string, string> = {
   dogs_inside: "Dogs Welcome Inside",
   dogs_outside: "Dogs Welcome Outside",
   dogs_both: "Fully Dog Friendly (Inside & Outside)",
+};
+
+const DAY_LABELS: Record<DayOfWeek, string> = {
+  monday: "Monday",
+  tuesday: "Tuesday",
+  wednesday: "Wednesday",
+  thursday: "Thursday",
+  friday: "Friday",
+  saturday: "Saturday",
+  sunday: "Sunday",
+};
+
+const DEFAULT_OPENING_HOURS: OpeningHours = {
+  monday:    { open: "09:00", close: "17:00", closed: false },
+  tuesday:   { open: "09:00", close: "17:00", closed: false },
+  wednesday: { open: "09:00", close: "17:00", closed: false },
+  thursday:  { open: "09:00", close: "17:00", closed: false },
+  friday:    { open: "09:00", close: "17:00", closed: false },
+  saturday:  { open: "10:00", close: "16:00", closed: false },
+  sunday:    { open: "10:00", close: "16:00", closed: false },
 };
 
 export default function PlaceForm() {
@@ -75,6 +95,7 @@ export default function PlaceForm() {
       longitude: -1.8,
       rating: 4.0,
       reviewCount: 0,
+      openingHours: DEFAULT_OPENING_HOURS,
     },
   });
 
@@ -98,6 +119,7 @@ export default function PlaceForm() {
         longitude: existing.longitude,
         rating: existing.rating,
         reviewCount: existing.reviewCount,
+        openingHours: existing.openingHours ?? DEFAULT_OPENING_HOURS,
       });
     }
   }, [existing, form]);
@@ -131,6 +153,16 @@ export default function PlaceForm() {
     } else {
       createMutation.mutate(values);
     }
+  }
+
+  const openingHours = form.watch("openingHours") ?? DEFAULT_OPENING_HOURS;
+
+  function updateDay(day: DayOfWeek, patch: Partial<{ open: string; close: string; closed: boolean }>) {
+    const current = openingHours ?? DEFAULT_OPENING_HOURS;
+    form.setValue("openingHours", {
+      ...current,
+      [day]: { ...current[day], ...patch },
+    });
   }
 
   if (authLoading || (isEditing && placeLoading)) {
@@ -328,6 +360,53 @@ export default function PlaceForm() {
                     <FormLabel className="font-normal cursor-pointer">Dog menu available</FormLabel>
                   </FormItem>
                 )} />
+              </div>
+            </section>
+
+            <section className="bg-card border border-border rounded-xl p-5 space-y-4">
+              <div>
+                <h2 className="font-semibold text-foreground">Opening Hours</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">Set hours for each day. Tick "Closed" if the place is shut that day.</p>
+              </div>
+
+              <div className="space-y-2">
+                {DAYS_OF_WEEK.map((day) => {
+                  const dayData = openingHours[day] ?? { open: "09:00", close: "17:00", closed: false };
+                  return (
+                    <div key={day} className="flex flex-wrap items-center gap-3 py-1.5 border-b border-border last:border-0">
+                      <span className="w-24 text-sm font-medium text-foreground shrink-0">{DAY_LABELS[day]}</span>
+
+                      <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0">
+                        <Checkbox
+                          data-testid={`check-closed-${day}`}
+                          checked={dayData.closed}
+                          onCheckedChange={(v) => updateDay(day, { closed: !!v })}
+                        />
+                        <span className="text-xs text-muted-foreground">Closed</span>
+                      </label>
+
+                      {!dayData.closed && (
+                        <div className="flex items-center gap-2">
+                          <Input
+                            data-testid={`input-open-${day}`}
+                            type="time"
+                            className="h-8 w-28 text-sm"
+                            value={dayData.open}
+                            onChange={(e) => updateDay(day, { open: e.target.value })}
+                          />
+                          <span className="text-xs text-muted-foreground">to</span>
+                          <Input
+                            data-testid={`input-close-${day}`}
+                            type="time"
+                            className="h-8 w-28 text-sm"
+                            value={dayData.close}
+                            onChange={(e) => updateDay(day, { close: e.target.value })}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </section>
 

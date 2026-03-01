@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, real, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, real, integer, boolean, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -35,6 +35,35 @@ export const DOG_POLICIES = [
 ] as const;
 export type DogPolicy = typeof DOG_POLICIES[number];
 
+export const DAYS_OF_WEEK = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+] as const;
+export type DayOfWeek = typeof DAYS_OF_WEEK[number];
+
+export const dayHoursSchema = z.object({
+  open: z.string(),
+  close: z.string(),
+  closed: z.boolean(),
+});
+export type DayHours = z.infer<typeof dayHoursSchema>;
+
+export const openingHoursSchema = z.object({
+  monday: dayHoursSchema,
+  tuesday: dayHoursSchema,
+  wednesday: dayHoursSchema,
+  thursday: dayHoursSchema,
+  friday: dayHoursSchema,
+  saturday: dayHoursSchema,
+  sunday: dayHoursSchema,
+});
+export type OpeningHours = z.infer<typeof openingHoursSchema>;
+
 export const places = pgTable("places", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
@@ -54,10 +83,12 @@ export const places = pgTable("places", {
   longitude: real("longitude").notNull(),
   rating: real("rating").notNull().default(4.0),
   reviewCount: integer("review_count").notNull().default(0),
+  openingHours: jsonb("opening_hours").$type<OpeningHours>(),
 });
 
 export const insertPlaceSchema = createInsertSchema(places).omit({ id: true }).extend({
   category: z.array(z.enum(PLACE_CATEGORIES)).min(1, "Select at least one category"),
+  openingHours: openingHoursSchema.nullable().optional(),
 });
 export type InsertPlace = z.infer<typeof insertPlaceSchema>;
 export type Place = typeof places.$inferSelect;
