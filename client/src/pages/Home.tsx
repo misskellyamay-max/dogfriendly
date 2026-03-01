@@ -134,7 +134,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative bg-muted dark:bg-card border-b-2 border-border">
+      <header className="relative bg-muted dark:bg-card border-b-2 border-input">
         <div className="relative max-w-4xl mx-auto px-4 py-10 md:py-14">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center overflow-hidden">
