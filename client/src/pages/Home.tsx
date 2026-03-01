@@ -143,10 +143,8 @@ export default function Home() {
               className="h-28 md:h-36 w-auto object-contain mix-blend-multiply"
             />
           </div>
-          <p className="text-lg md:text-xl font-medium mb-1 text-foreground text-center">Find places that welcome your dog</p>
-          <p className="text-sm text-muted-foreground mb-7 text-center">
-            Search restaurants, cafes, pubs, shops and more — all verified dog-friendly
-          </p>
+          <p className="text-lg md:text-xl font-medium mb-5 text-foreground text-center">Find places that welcome your dog</p>
+
 
           <form onSubmit={handleSearch} className="flex flex-col gap-2">
             <div className="flex gap-2 max-w-sm mx-auto w-full">
