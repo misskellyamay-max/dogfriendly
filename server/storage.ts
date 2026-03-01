@@ -14,6 +14,8 @@ export interface IStorage {
   searchPlacesByPostcode(postcode: string): Promise<Place[]>;
   getPlacesNearLocation(lat: number, lon: number, radiusMiles: number): Promise<Place[]>;
   createPlace(place: InsertPlace): Promise<Place>;
+  updatePlace(id: string, place: Partial<InsertPlace>): Promise<Place | undefined>;
+  deletePlace(id: string): Promise<boolean>;
   getPlaceCount(): Promise<number>;
 }
 
@@ -86,6 +88,16 @@ export class DatabaseStorage implements IStorage {
   async createPlace(place: InsertPlace): Promise<Place> {
     const [created] = await db.insert(places).values(place).returning();
     return created;
+  }
+
+  async updatePlace(id: string, place: Partial<InsertPlace>): Promise<Place | undefined> {
+    const [updated] = await db.update(places).set(place).where(eq(places.id, id)).returning();
+    return updated;
+  }
+
+  async deletePlace(id: string): Promise<boolean> {
+    const result = await db.delete(places).where(eq(places.id, id)).returning();
+    return result.length > 0;
   }
 
   async getPlaceCount(): Promise<number> {

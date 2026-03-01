@@ -6,12 +6,19 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import PlaceDetail from "@/pages/PlaceDetail";
+import AdminLogin from "@/pages/admin/AdminLogin";
+import AdminPlaces from "@/pages/admin/AdminPlaces";
+import PlaceForm from "@/pages/admin/PlaceForm";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/place/:id" component={PlaceDetail} />
+      <Route path="/admin" component={AdminLogin} />
+      <Route path="/admin/places" component={AdminPlaces} />
+      <Route path="/admin/places/new" component={PlaceForm} />
+      <Route path="/admin/places/:id/edit" component={PlaceForm} />
       <Route component={NotFound} />
     </Switch>
   );
