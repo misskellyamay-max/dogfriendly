@@ -139,20 +139,19 @@ export default function Home() {
           <div className="absolute top-4 right-8 w-64 h-64 rounded-full bg-white/20 blur-3xl" />
           <div className="absolute -bottom-8 -left-8 w-80 h-80 rounded-full bg-white/10 blur-3xl" />
         </div>
-        <div className="relative max-w-4xl mx-auto px-4 py-10 md:py-14 flex flex-col items-center text-center">
-          <div className="bg-white rounded-2xl px-8 py-4 mb-5 shadow-sm inline-flex items-center justify-center">
-            <img
-              src="/houndsabout-logo.png"
-              alt="Houndsabout"
-              className="h-14 md:h-16 w-auto object-contain"
-            />
+        <div className="relative max-w-4xl mx-auto px-4 py-10 md:py-14">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-white/95 flex items-center justify-center overflow-hidden shadow-sm">
+              <img src="/logo.png" alt="Houndsabout logo" className="w-10 h-10 object-contain" />
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight">Houndsabout</h1>
           </div>
           <p className="text-lg md:text-xl font-medium mb-1">Find places that welcome your dog</p>
           <p className="text-sm text-white/75 mb-7">
             Search restaurants, cafes, pubs, shops and more — all verified dog-friendly
           </p>
 
-          <form onSubmit={handleSearch} className="flex flex-col gap-3 w-full">
+          <form onSubmit={handleSearch} className="flex flex-col gap-3">
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40 pointer-events-none" />
