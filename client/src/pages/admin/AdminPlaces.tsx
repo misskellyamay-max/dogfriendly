@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useAdmin } from "@/hooks/useAdmin";
 import type { Place } from "@shared/schema";
-import { PlusCircle, Pencil, Trash2, LogOut, Upload } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, LogOut, Upload, ShieldCheck } from "lucide-react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   restaurant: "Restaurant",
@@ -40,6 +40,20 @@ export default function AdminPlaces() {
     onError: () => {
       toast({ title: "Failed to delete listing", variant: "destructive" });
       setDeletingId(null);
+    },
+  });
+
+  const verifyMutation = useMutation({
+    mutationFn: ({ id, verified }: { id: string; verified: boolean }) =>
+      apiRequest("PATCH", `/api/admin/places/${id}`, {
+        verified,
+        verifiedAt: verified ? new Date().toISOString() : null,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/places"] });
+    },
+    onError: () => {
+      toast({ title: "Failed to update verification", variant: "destructive" });
     },
   });
 
@@ -101,6 +115,7 @@ export default function AdminPlaces() {
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Town</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Category</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Rating</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Verified</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -121,6 +136,23 @@ export default function AdminPlaces() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell">{place.rating.toFixed(1)} ★</td>
+                  <td className="px-4 py-3">
+                    <label className="flex flex-col items-start gap-1 cursor-pointer">
+                      <input
+                        data-testid={`checkbox-verified-${place.id}`}
+                        type="checkbox"
+                        className="w-4 h-4 accent-[#ff9900] cursor-pointer"
+                        checked={!!place.verified}
+                        onChange={e => verifyMutation.mutate({ id: place.id, verified: e.target.checked })}
+                      />
+                      {place.verified && place.verifiedAt && (
+                        <span className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400 whitespace-nowrap">
+                          <ShieldCheck className="w-3 h-3" />
+                          {new Date(place.verifiedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                        </span>
+                      )}
+                    </label>
+                  </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2 justify-end">
                       <Link href={`/admin/places/${place.id}/edit`}>

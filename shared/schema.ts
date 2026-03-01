@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, real, integer, boolean, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, real, integer, boolean, jsonb, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -85,11 +85,14 @@ export const places = pgTable("places", {
   rating: real("rating").notNull().default(4.0),
   reviewCount: integer("review_count").notNull().default(0),
   openingHours: jsonb("opening_hours").$type<OpeningHours>(),
+  verified: boolean("verified").default(false).notNull(),
+  verifiedAt: timestamp("verified_at"),
 });
 
 export const insertPlaceSchema = createInsertSchema(places).omit({ id: true }).extend({
   category: z.array(z.enum(PLACE_CATEGORIES)).min(1, "Select at least one category"),
   openingHours: openingHoursSchema.nullable().optional(),
+  verifiedAt: z.coerce.date().nullable().optional(),
 });
 export type InsertPlace = z.infer<typeof insertPlaceSchema>;
 export type Place = typeof places.$inferSelect;

@@ -26,6 +26,7 @@ import {
   Waves,
   Ticket,
   Clock,
+  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -155,6 +156,12 @@ export default function PlaceDetail() {
               <MapPin className="w-4 h-4 flex-shrink-0" />
               <span>{place.address}{place.address2 ? `, ${place.address2}` : ""}, {place.town}, {place.postcode}</span>
             </div>
+            {place.verified && place.verifiedAt && (
+              <div data-testid="badge-verified" className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                Verified on {new Date(place.verifiedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+              </div>
+            )}
           </div>
 
           <div className="bg-card border border-card-border rounded-xl p-5">
