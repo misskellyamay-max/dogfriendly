@@ -1,19 +1,21 @@
 import type { Place } from "@shared/schema";
 import { categoryLabel, dogPolicyLabel, formatRating } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, MapPin, Droplets, Cookie, UtensilsCrossed } from "lucide-react";
+import {
+  Star, MapPin, Droplets, Cookie, UtensilsCrossed,
+  Utensils, Coffee, Beer, ShoppingBag, BedDouble, Trees, Waves, Ticket, type LucideIcon
+} from "lucide-react";
 import { Link } from "wouter";
 
-const categoryColors: Record<string, string> = {
-  restaurant: "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
-  cafe: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300",
-  pub: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-  retail: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
-  hotel: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
-  park: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
-  beach: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300",
-  attraction: "bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300",
+const categoryIcons: Record<string, LucideIcon> = {
+  restaurant: Utensils,
+  cafe: Coffee,
+  pub: Beer,
+  retail: ShoppingBag,
+  hotel: BedDouble,
+  park: Trees,
+  beach: Waves,
+  attraction: Ticket,
 };
 
 const policyColors: Record<string, string> = {
@@ -21,7 +23,6 @@ const policyColors: Record<string, string> = {
   dogs_outside: "bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300",
   dogs_both: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300",
 };
-
 
 interface PlaceCardProps {
   place: Place;
@@ -46,6 +47,8 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export function PlaceCard({ place, distance }: PlaceCardProps) {
+  const CategoryIcon = categoryIcons[place.category];
+
   return (
     <Link href={`/place/${place.id}`}>
       <Card
@@ -64,9 +67,8 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
             />
           ) : null}
           <div className="absolute top-2 left-2">
-            <span
-              className={`text-xs font-semibold px-2.5 py-1 rounded-md ${categoryColors[place.category] ?? "bg-muted text-muted-foreground"}`}
-            >
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-zinc-700 border border-zinc-300 shadow-sm">
+              {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
               {categoryLabel(place.category as any)}
             </span>
           </div>
