@@ -144,8 +144,8 @@ export default function Home() {
             />
           </div>
           <p
-            className="text-base md:text-lg font-bold tracking-wide text-center mb-4"
-            style={{ color: "#ff9900" }}
+            className="text-base md:text-lg font-bold tracking-wide text-center mb-4 -mt-4"
+            style={{ color: "#444444" }}
           >
             Discover dog-friendly spots near you
           </p>
