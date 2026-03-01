@@ -62,7 +62,7 @@ export default function PlaceForm() {
       address: "",
       town: "",
       postcode: "",
-      category: "restaurant",
+      category: [],
       description: "",
       phone: "",
       website: "",
@@ -177,19 +177,28 @@ export default function PlaceForm() {
 
               <FormField control={form.control} name="category" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category *</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger data-testid="select-category">
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {PLACE_CATEGORIES.map(c => (
-                        <SelectItem key={c} value={c}>{CATEGORY_LABELS[c]}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Category * <span className="text-muted-foreground font-normal">(select all that apply)</span></FormLabel>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    {PLACE_CATEGORIES.map(c => {
+                      const checked = (field.value ?? []).includes(c);
+                      return (
+                        <label
+                          key={c}
+                          data-testid={`check-category-${c}`}
+                          className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border cursor-pointer transition-colors text-sm font-medium select-none ${checked ? "border-zinc-700 bg-zinc-50 text-zinc-900" : "border-border bg-background text-muted-foreground hover:border-zinc-400"}`}
+                        >
+                          <Checkbox
+                            checked={checked}
+                            onCheckedChange={(v) => {
+                              const current = field.value ?? [];
+                              field.onChange(v ? [...current, c] : current.filter(x => x !== c));
+                            }}
+                          />
+                          {CATEGORY_LABELS[c]}
+                        </label>
+                      );
+                    })}
+                  </div>
                   <FormMessage />
                 </FormItem>
               )} />

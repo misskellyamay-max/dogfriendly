@@ -47,7 +47,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export function PlaceCard({ place, distance }: PlaceCardProps) {
-  const CategoryIcon = categoryIcons[place.category];
+  const categories = Array.isArray(place.category) ? place.category : [place.category];
 
   return (
     <Link href={`/place/${place.id}`}>
@@ -66,11 +66,19 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
               }}
             />
           ) : null}
-          <div className="absolute top-2 left-2">
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-zinc-700 border border-zinc-300 shadow-sm">
-              {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
-              {categoryLabel(place.category as any)}
-            </span>
+          <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+            {categories.map((cat) => {
+              const Icon = categoryIcons[cat];
+              return (
+                <span
+                  key={cat}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-zinc-700 border border-zinc-300 shadow-sm"
+                >
+                  {Icon && <Icon className="w-3 h-3" />}
+                  {categoryLabel(cat as any)}
+                </span>
+              );
+            })}
           </div>
           {distance !== undefined && (
             <div className="absolute top-2 right-2">

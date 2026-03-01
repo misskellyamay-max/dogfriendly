@@ -67,7 +67,7 @@ export async function registerRoutes(
       }
 
       if (type && type !== "all") {
-        places = places.filter(p => p.category === type);
+        places = places.filter(p => p.category.includes(type as string));
       }
 
       res.json(places);

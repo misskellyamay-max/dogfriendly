@@ -3,7 +3,6 @@ import { useParams, Link } from "wouter";
 import type { Place } from "@shared/schema";
 import { dogPolicyLabel, categoryLabel, formatRating } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowLeft,
@@ -17,17 +16,26 @@ import {
   PawPrint,
   CheckCircle2,
   Dog,
+  Utensils,
+  Coffee,
+  Beer,
+  ShoppingBag,
+  BedDouble,
+  Trees,
+  Waves,
+  Ticket,
+  type LucideIcon,
 } from "lucide-react";
 
-const categoryEmoji: Record<string, string> = {
-  restaurant: "🍽",
-  cafe: "☕",
-  pub: "🍺",
-  retail: "🛍",
-  hotel: "🏨",
-  park: "🌳",
-  beach: "🏖",
-  attraction: "🎡",
+const categoryIcons: Record<string, LucideIcon> = {
+  restaurant: Utensils,
+  cafe: Coffee,
+  pub: Beer,
+  retail: ShoppingBag,
+  hotel: BedDouble,
+  park: Trees,
+  beach: Waves,
+  attraction: Ticket,
 };
 
 const policyColors: Record<string, string> = {
@@ -96,6 +104,8 @@ export default function PlaceDetail() {
     );
   }
 
+  const categories = Array.isArray(place.category) ? place.category : [place.category];
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-4 py-6">
@@ -121,13 +131,19 @@ export default function PlaceDetail() {
               }}
             />
           ) : null}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 flex items-center justify-center">
-            <span className="text-7xl opacity-60">{categoryEmoji[place.category] ?? "📍"}</span>
-          </div>
-          <div className="absolute bottom-4 left-4">
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-white/90 dark:bg-black/70 text-foreground">
-              {categoryLabel(place.category as any)}
-            </span>
+          <div className="absolute bottom-4 left-4 flex flex-wrap gap-1.5">
+            {categories.map((cat) => {
+              const Icon = categoryIcons[cat];
+              return (
+                <span
+                  key={cat}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-zinc-700 border border-zinc-300 shadow-sm"
+                >
+                  {Icon && <Icon className="w-3 h-3" />}
+                  {categoryLabel(cat as any)}
+                </span>
+              );
+            })}
           </div>
         </div>
 

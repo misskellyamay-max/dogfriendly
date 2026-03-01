@@ -41,7 +41,7 @@ export const places = pgTable("places", {
   address: text("address").notNull(),
   town: text("town").notNull(),
   postcode: text("postcode").notNull(),
-  category: text("category").notNull().$type<PlaceCategory>(),
+  category: text("category").array().notNull().$type<PlaceCategory[]>(),
   description: text("description").notNull(),
   phone: text("phone"),
   website: text("website"),
@@ -56,6 +56,8 @@ export const places = pgTable("places", {
   reviewCount: integer("review_count").notNull().default(0),
 });
 
-export const insertPlaceSchema = createInsertSchema(places).omit({ id: true });
+export const insertPlaceSchema = createInsertSchema(places).omit({ id: true }).extend({
+  category: z.array(z.enum(PLACE_CATEGORIES)).min(1, "Select at least one category"),
+});
 export type InsertPlace = z.infer<typeof insertPlaceSchema>;
 export type Place = typeof places.$inferSelect;

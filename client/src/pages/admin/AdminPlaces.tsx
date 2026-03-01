@@ -108,7 +108,11 @@ export default function AdminPlaces() {
                   <td className="px-4 py-3 font-medium text-foreground">{place.name}</td>
                   <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{place.town}</td>
                   <td className="px-4 py-3 hidden sm:table-cell">
-                    <Badge variant="outline">{CATEGORY_LABELS[place.category] ?? place.category}</Badge>
+                    <div className="flex flex-wrap gap-1">
+                      {(Array.isArray(place.category) ? place.category : [place.category]).map(c => (
+                        <Badge key={c} variant="outline">{CATEGORY_LABELS[c] ?? c}</Badge>
+                      ))}
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell">{place.rating.toFixed(1)} ★</td>
                   <td className="px-4 py-3">
