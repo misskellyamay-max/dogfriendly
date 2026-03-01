@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,6 +67,7 @@ const DEFAULT_OPENING_HOURS: OpeningHours = {
 export default function PlaceForm() {
   const { id } = useParams<{ id: string }>();
   const isEditing = !!id;
+  const [showOpeningHours, setShowOpeningHours] = useState(false);
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const { isLoading: authLoading } = useAdmin();
@@ -98,12 +99,13 @@ export default function PlaceForm() {
       longitude: -1.8,
       rating: 4.0,
       reviewCount: 0,
-      openingHours: DEFAULT_OPENING_HOURS,
+      openingHours: null,
     },
   });
 
   useEffect(() => {
     if (existing) {
+      setShowOpeningHours(!!existing.openingHours);
       form.reset({
         name: existing.name,
         address: existing.address,
@@ -124,7 +126,7 @@ export default function PlaceForm() {
         longitude: existing.longitude,
         rating: existing.rating,
         reviewCount: existing.reviewCount,
-        openingHours: existing.openingHours ?? DEFAULT_OPENING_HOURS,
+        openingHours: existing.openingHours ?? null,
       });
     }
   }, [existing, form]);
@@ -153,10 +155,11 @@ export default function PlaceForm() {
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   function onSubmit(values: FormValues) {
+    const payload = { ...values, openingHours: showOpeningHours ? values.openingHours : null };
     if (isEditing) {
-      updateMutation.mutate(values);
+      updateMutation.mutate(payload);
     } else {
-      createMutation.mutate(values);
+      createMutation.mutate(payload);
     }
   }
 
@@ -396,50 +399,71 @@ export default function PlaceForm() {
             </section>
 
             <section className="bg-card border border-border rounded-xl p-5 space-y-4">
-              <div>
-                <h2 className="font-semibold text-foreground">Opening Hours</h2>
-                <p className="text-xs text-muted-foreground mt-0.5">Set hours for each day. Tick "Closed" if the place is shut that day.</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-semibold text-foreground">Opening Hours</h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {showOpeningHours ? 'Set hours for each day. Tick "Closed" if the place is shut that day.' : "Enable to set opening hours for this listing."}
+                  </p>
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer select-none" data-testid="toggle-opening-hours">
+                  <span className="text-sm text-muted-foreground">{showOpeningHours ? "Shown" : "Hidden"}</span>
+                  <div
+                    className={`relative w-10 h-6 rounded-full transition-colors ${showOpeningHours ? "bg-primary" : "bg-muted-foreground/30"}`}
+                    onClick={() => {
+                      const next = !showOpeningHours;
+                      setShowOpeningHours(next);
+                      if (next && !form.getValues("openingHours")) {
+                        form.setValue("openingHours", DEFAULT_OPENING_HOURS);
+                      }
+                    }}
+                  >
+                    <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${showOpeningHours ? "translate-x-5" : "translate-x-1"}`} />
+                  </div>
+                </label>
               </div>
 
-              <div className="space-y-2">
-                {DAYS_OF_WEEK.map((day) => {
-                  const dayData = openingHours[day] ?? { open: "09:00", close: "17:00", closed: false };
-                  return (
-                    <div key={day} className="flex flex-wrap items-center gap-3 py-1.5 border-b border-border last:border-0">
-                      <span className="w-24 text-sm font-medium text-foreground shrink-0">{DAY_LABELS[day]}</span>
+              {showOpeningHours && (
+                <div className="space-y-2">
+                  {DAYS_OF_WEEK.map((day) => {
+                    const dayData = openingHours[day] ?? { open: "09:00", close: "17:00", closed: false };
+                    return (
+                      <div key={day} className="flex flex-wrap items-center gap-3 py-1.5 border-b border-border last:border-0">
+                        <span className="w-24 text-sm font-medium text-foreground shrink-0">{DAY_LABELS[day]}</span>
 
-                      <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0">
-                        <Checkbox
-                          data-testid={`check-closed-${day}`}
-                          checked={dayData.closed}
-                          onCheckedChange={(v) => updateDay(day, { closed: !!v })}
-                        />
-                        <span className="text-xs text-muted-foreground">Closed</span>
-                      </label>
+                        <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0">
+                          <Checkbox
+                            data-testid={`check-closed-${day}`}
+                            checked={dayData.closed}
+                            onCheckedChange={(v) => updateDay(day, { closed: !!v })}
+                          />
+                          <span className="text-xs text-muted-foreground">Closed</span>
+                        </label>
 
-                      {!dayData.closed && (
-                        <div className="flex items-center gap-2">
-                          <Input
-                            data-testid={`input-open-${day}`}
-                            type="time"
-                            className="h-8 w-28 text-sm"
-                            value={dayData.open}
-                            onChange={(e) => updateDay(day, { open: e.target.value })}
-                          />
-                          <span className="text-xs text-muted-foreground">to</span>
-                          <Input
-                            data-testid={`input-close-${day}`}
-                            type="time"
-                            className="h-8 w-28 text-sm"
-                            value={dayData.close}
-                            onChange={(e) => updateDay(day, { close: e.target.value })}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+                        {!dayData.closed && (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              data-testid={`input-open-${day}`}
+                              type="time"
+                              className="h-8 w-28 text-sm"
+                              value={dayData.open}
+                              onChange={(e) => updateDay(day, { open: e.target.value })}
+                            />
+                            <span className="text-xs text-muted-foreground">to</span>
+                            <Input
+                              data-testid={`input-close-${day}`}
+                              type="time"
+                              className="h-8 w-28 text-sm"
+                              value={dayData.close}
+                              onChange={(e) => updateDay(day, { close: e.target.value })}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </section>
 
             <section className="bg-card border border-border rounded-xl p-5 space-y-4">
