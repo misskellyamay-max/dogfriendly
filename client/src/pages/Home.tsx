@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Place, PlaceCategory } from "@shared/schema";
 import { PLACE_CATEGORIES } from "@shared/schema";
 import { PlaceCard } from "@/components/PlaceCard";
+import { MapView } from "@/components/MapView";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,6 +16,8 @@ import {
   PawPrint,
   X,
   Loader2,
+  LayoutGrid,
+  Map,
 } from "lucide-react";
 
 
@@ -55,6 +58,7 @@ export default function Home() {
   const [searchMode, setSearchMode] = useState<SearchMode>("browse");
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
   const buildSearchUrl = useCallback(() => {
     const params = new URLSearchParams();
@@ -232,14 +236,37 @@ export default function Home() {
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">{searchDescription()}</h2>
-              {places && (
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  {places.length} {places.length === 1 ? "place" : "places"} found
-                </p>
-              )}
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">{searchDescription()}</h2>
+                {places && (
+                  <p className="text-sm text-muted-foreground mt-0.5">
+                    {places.length} {places.length === 1 ? "place" : "places"} found
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2 border border-border rounded-lg p-0.5">
+                <Button
+                  data-testid="button-view-grid"
+                  variant={viewMode === "grid" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("grid")}
+                  className="h-8 gap-1.5"
+                >
+                  <LayoutGrid className="w-4 h-4" /> Grid
+                </Button>
+                <Button
+                  data-testid="button-view-map"
+                  variant={viewMode === "map" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("map")}
+                  className="h-8 gap-1.5"
+                >
+                  <Map className="w-4 h-4" /> Map
+                </Button>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-2">
@@ -294,6 +321,8 @@ export default function Home() {
                 Browse all places
               </Button>
             </div>
+          ) : viewMode === "map" ? (
+            <MapView places={places ?? []} />
           ) : (
             <div
               data-testid="grid-places"
