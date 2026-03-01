@@ -2,7 +2,7 @@ import type { Place } from "@shared/schema";
 import { categoryLabel, dogPolicyLabel, formatRating } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, MapPin, Droplets, Cookie, UtensilsCrossed, Utensils, Coffee, Beer, ShoppingBag, BedDouble, Trees, Waves, Ferris } from "lucide-react";
+import { Star, MapPin, Droplets, Cookie, UtensilsCrossed } from "lucide-react";
 import { Link } from "wouter";
 
 const categoryColors: Record<string, string> = {
@@ -22,16 +22,6 @@ const policyColors: Record<string, string> = {
   dogs_both: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300",
 };
 
-const categoryEmoji: Record<string, string> = {
-  restaurant: "🍽",
-  cafe: "☕",
-  pub: "🍺",
-  retail: "🛍",
-  hotel: "🏨",
-  park: "🌳",
-  beach: "🏖",
-  attraction: "🎡",
-};
 
 interface PlaceCardProps {
   place: Place;
@@ -73,9 +63,6 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
               }}
             />
           ) : null}
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-muted/30 to-muted/70">
-            <span className="text-5xl opacity-70">{categoryEmoji[place.category] ?? "📍"}</span>
-          </div>
           <div className="absolute top-2 left-2">
             <span
               className={`text-xs font-semibold px-2.5 py-1 rounded-md ${categoryColors[place.category] ?? "bg-muted text-muted-foreground"}`}
