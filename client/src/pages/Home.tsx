@@ -135,7 +135,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="relative bg-card dark:bg-card border-b-2 border-input">
-        <div className="relative max-w-4xl mx-auto px-4 py-10 md:py-14">
+        <div className="relative max-w-4xl mx-auto px-4 py-5 md:py-7">
           <div className="flex justify-center mb-4">
             <img
               src="/houndsabout-logo2.png"
