@@ -140,7 +140,7 @@ export default function Home() {
             <img
               src="/houndsabout-logo2.png"
               alt="Houndsabout"
-              className="h-20 md:h-24 w-auto object-contain mix-blend-multiply"
+              className="h-28 md:h-36 w-auto object-contain mix-blend-multiply"
             />
           </div>
           <p className="text-lg md:text-xl font-medium mb-1 text-foreground text-center">Find places that welcome your dog</p>
@@ -148,8 +148,8 @@ export default function Home() {
             Search restaurants, cafes, pubs, shops and more — all verified dog-friendly
           </p>
 
-          <form onSubmit={handleSearch} className="flex flex-col gap-3">
-            <div className="flex gap-2">
+          <form onSubmit={handleSearch} className="flex flex-col gap-2">
+            <div className="flex gap-2 max-w-sm mx-auto w-full">
               <div className="relative flex-1">
                 <Input
                   data-testid="input-search"
@@ -157,20 +157,20 @@ export default function Home() {
                   placeholder="Town, city or postcode..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  className="pl-5 pr-14 h-11 bg-background text-foreground placeholder:text-muted-foreground border-border rounded-full"
+                  className="pl-4 pr-11 h-9 text-sm bg-background text-foreground placeholder:text-muted-foreground border-border rounded-full"
                 />
                 <button
                   data-testid="button-search"
                   type="submit"
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75"
                   style={{ backgroundColor: "#ff9900" }}
                 >
-                  <Search className="w-4 h-4 text-white" />
+                  <Search className="w-3.5 h-3.5 text-white" />
                 </button>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center justify-center gap-2">
               <Button
                 data-testid="button-use-location"
                 type="button"
