@@ -136,14 +136,15 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <header className="relative bg-card dark:bg-card border-b-2 border-input">
         <div className="relative max-w-4xl mx-auto px-4 py-10 md:py-14">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center overflow-hidden">
-              <img src="/logo.png" alt="Houndsabout logo" className="w-10 h-10 object-contain" />
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Houndsabout</h1>
+          <div className="flex justify-center mb-4">
+            <img
+              src="/houndsabout-logo2.png"
+              alt="Houndsabout"
+              className="h-14 md:h-16 w-auto object-contain mix-blend-multiply"
+            />
           </div>
-          <p className="text-lg md:text-xl font-medium mb-1 text-foreground">Find places that welcome your dog</p>
-          <p className="text-sm text-muted-foreground mb-7">
+          <p className="text-lg md:text-xl font-medium mb-1 text-foreground text-center">Find places that welcome your dog</p>
+          <p className="text-sm text-muted-foreground mb-7 text-center">
             Search restaurants, cafes, pubs, shops and more — all verified dog-friendly
           </p>
 
