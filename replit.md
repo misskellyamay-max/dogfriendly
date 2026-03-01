@@ -1,4 +1,4 @@
-# DogFriendly - Find Dog-Friendly Places
+# Houndsabout - Find Dog-Friendly Places
 
 A web application for dog owners to discover places that welcome their dogs - restaurants, cafes, pubs, retail shops, hotels and more.
 

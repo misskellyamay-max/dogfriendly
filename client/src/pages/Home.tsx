@@ -17,6 +17,7 @@ import {
   Loader2,
 } from "lucide-react";
 
+
 const RADIUS_OPTIONS = [
   { label: "1 mile", value: "1" },
   { label: "5 miles", value: "5" },
@@ -140,10 +141,10 @@ export default function Home() {
         </div>
         <div className="relative max-w-4xl mx-auto px-4 py-10 md:py-14">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-              <PawPrint className="w-5 h-5 text-white" />
+            <div className="w-12 h-12 rounded-2xl bg-white/95 flex items-center justify-center overflow-hidden shadow-sm">
+              <img src="/logo.png" alt="Houndsabout logo" className="w-10 h-10 object-contain" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">DogFriendly</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Houndsabout</h1>
           </div>
           <p className="text-lg md:text-xl font-medium mb-1">Find places that welcome your dog</p>
           <p className="text-sm text-white/75 mb-7">
