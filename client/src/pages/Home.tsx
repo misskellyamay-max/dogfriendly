@@ -136,15 +136,19 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <header className="relative bg-card dark:bg-card border-b-2 border-input">
         <div className="relative max-w-4xl mx-auto px-4 py-5 md:py-7">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-1">
             <img
               src="/houndsabout-logo2.png"
               alt="Houndsabout"
               className="h-28 md:h-36 w-auto object-contain mix-blend-multiply"
             />
           </div>
-          <p className="text-lg md:text-xl font-medium mb-5 text-foreground text-center">Find places that welcome your dog</p>
-
+          <p
+            className="text-base md:text-lg font-bold tracking-wide text-center mb-4"
+            style={{ color: "#ff9900" }}
+          >
+            Discover dog-friendly spots near you
+          </p>
 
           <form onSubmit={handleSearch} className="flex flex-col gap-2">
             <div className="flex gap-2 max-w-sm mx-auto w-full">
