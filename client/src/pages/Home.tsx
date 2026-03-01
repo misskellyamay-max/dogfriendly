@@ -151,24 +151,23 @@ export default function Home() {
           <form onSubmit={handleSearch} className="flex flex-col gap-3">
             <div className="flex gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40 pointer-events-none" />
                 <Input
                   data-testid="input-search"
                   type="search"
                   placeholder="Town, city or postcode..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  className="pl-9 pr-4 h-11 bg-background text-foreground placeholder:text-muted-foreground border-border rounded-full"
+                  className="pl-5 pr-14 h-11 bg-background text-foreground placeholder:text-muted-foreground border-border rounded-full"
                 />
+                <button
+                  data-testid="button-search"
+                  type="submit"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75"
+                  style={{ backgroundColor: "#ff9900" }}
+                >
+                  <Search className="w-4 h-4 text-white" />
+                </button>
               </div>
-              <Button
-                data-testid="button-search"
-                type="submit"
-                size="lg"
-                className="h-11 px-5 font-semibold"
-              >
-                Search
-              </Button>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
