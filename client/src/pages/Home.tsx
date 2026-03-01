@@ -134,20 +134,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative overflow-hidden bg-gradient-to-br from-primary/90 to-teal-700 dark:from-primary/70 dark:to-teal-900 text-white">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-4 right-8 w-64 h-64 rounded-full bg-white/20 blur-3xl" />
-          <div className="absolute -bottom-8 -left-8 w-80 h-80 rounded-full bg-white/10 blur-3xl" />
-        </div>
+      <header className="relative bg-white dark:bg-card border-b border-border">
         <div className="relative max-w-4xl mx-auto px-4 py-10 md:py-14">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-white/95 flex items-center justify-center overflow-hidden shadow-sm">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center overflow-hidden">
               <img src="/logo.png" alt="Houndsabout logo" className="w-10 h-10 object-contain" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Houndsabout</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">Houndsabout</h1>
           </div>
-          <p className="text-lg md:text-xl font-medium mb-1">Find places that welcome your dog</p>
-          <p className="text-sm text-white/75 mb-7">
+          <p className="text-lg md:text-xl font-medium mb-1 text-foreground">Find places that welcome your dog</p>
+          <p className="text-sm text-muted-foreground mb-7">
             Search restaurants, cafes, pubs, shops and more — all verified dog-friendly
           </p>
 
@@ -161,15 +157,14 @@ export default function Home() {
                   placeholder="Town, city or postcode..."
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  className="pl-9 pr-4 h-11 bg-white/95 dark:bg-background/80 text-foreground placeholder:text-muted-foreground border-white/30 focus:ring-2 focus:ring-white/50"
+                  className="pl-9 pr-4 h-11 bg-background text-foreground placeholder:text-muted-foreground border-border"
                 />
               </div>
               <Button
                 data-testid="button-search"
                 type="submit"
                 size="lg"
-                className="h-11 px-5 bg-white text-primary border-white/30 font-semibold"
-                variant="outline"
+                className="h-11 px-5 font-semibold"
               >
                 Search
               </Button>
@@ -183,7 +178,7 @@ export default function Home() {
                 size="sm"
                 onClick={handleUseLocation}
                 disabled={locating}
-                className="h-9 bg-white/10 border-white/30 text-white font-medium flex items-center gap-1.5"
+                className="h-9 font-medium flex items-center gap-1.5"
               >
                 {locating ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -195,11 +190,11 @@ export default function Home() {
 
               {(searchMode === "location") && (
                 <div className="flex items-center gap-1.5">
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-white/70" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
                   <Select value={radius} onValueChange={setRadius}>
                     <SelectTrigger
                       data-testid="select-radius"
-                      className="h-9 w-32 bg-white/10 border-white/30 text-white text-sm"
+                      className="h-9 w-32 text-sm"
                     >
                       <SelectValue />
                     </SelectTrigger>
@@ -218,7 +213,7 @@ export default function Home() {
                   variant="ghost"
                   size="sm"
                   onClick={handleClearSearch}
-                  className="h-9 text-white/80 border-white/20 flex items-center gap-1"
+                  className="h-9 flex items-center gap-1"
                   data-testid="button-clear-search"
                 >
                   <X className="w-3.5 h-3.5" /> Clear
@@ -227,7 +222,7 @@ export default function Home() {
             </div>
 
             {locationError && (
-              <p className="text-sm text-red-200 bg-red-900/30 px-3 py-2 rounded-md">{locationError}</p>
+              <p className="text-sm text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 px-3 py-2 rounded-md">{locationError}</p>
             )}
           </form>
         </div>
