@@ -2,7 +2,7 @@ import type { Place } from "@shared/schema";
 import { categoryLabel, dogPolicyLabel, formatRating } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, MapPin, Phone, Globe, Droplets, Cookie, UtensilsCrossed } from "lucide-react";
+import { Star, MapPin, Droplets, Cookie, UtensilsCrossed, Utensils, Coffee, Beer, ShoppingBag, BedDouble, Trees, Waves, Ferris } from "lucide-react";
 import { Link } from "wouter";
 
 const categoryColors: Record<string, string> = {
