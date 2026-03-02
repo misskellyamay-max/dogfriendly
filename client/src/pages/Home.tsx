@@ -139,60 +139,58 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative overflow-hidden min-h-[260px] md:min-h-[300px]">
+      <header className="relative overflow-hidden min-h-[380px] md:min-h-[440px] flex items-center">
         <img
           src={bannerImg}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-white/60" />
-        <div className="relative max-w-4xl mx-auto px-4 py-5 md:py-7">
-          <div className="flex justify-center mb-1">
-            <img
-              src="/houndsabout-logo2.png"
-              alt="Houndsabout"
-              className="h-28 md:h-36 w-auto object-contain mix-blend-multiply"
-            />
-          </div>
-          <p
-            className="text-base md:text-lg font-bold tracking-wide text-center mb-4 -mt-4"
-            style={{ color: "#444444" }}
-          >
-            Discover dog-friendly spots near you
-          </p>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
+        <div className="relative w-full max-w-3xl mx-auto px-4 py-10 flex flex-col items-center gap-5">
 
-          <form onSubmit={handleSearch} className="flex flex-col gap-2">
-            <div className="flex gap-2 max-w-sm mx-auto w-full">
-              <div className="relative flex-1">
-                <Input
-                  data-testid="input-search"
-                  type="search"
-                  placeholder="Town, city or postcode..."
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  className="pl-4 pr-11 h-9 text-sm bg-background text-foreground placeholder:text-muted-foreground border-border rounded-full"
-                />
-                <button
-                  data-testid="button-search"
-                  type="submit"
-                  className="absolute right-1 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75"
-                  style={{ backgroundColor: "#ff9900" }}
-                >
-                  <Search className="w-3.5 h-3.5 text-white" />
-                </button>
-              </div>
+          <img
+            src="/houndsabout-logo2.png"
+            alt="Houndsabout"
+            className="h-16 md:h-20 w-auto object-contain drop-shadow-lg"
+          />
+
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-md leading-tight">
+              Find dog-friendly spots near you
+            </h1>
+            <p className="text-white/85 text-base md:text-lg drop-shadow">
+              Restaurants, pubs, cafés, hotels, shops and more
+            </p>
+          </div>
+
+          <form onSubmit={handleSearch} className="w-full flex flex-col items-center gap-3">
+            <div className="relative w-full max-w-2xl">
+              <Input
+                data-testid="input-search"
+                type="search"
+                placeholder="Town, city or postcode..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="pl-6 pr-16 h-14 text-base bg-white text-foreground placeholder:text-muted-foreground border-0 rounded-full shadow-xl focus-visible:ring-2 focus-visible:ring-primary"
+              />
+              <button
+                data-testid="button-search"
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75 shadow-md"
+                style={{ backgroundColor: "#ff9900" }}
+              >
+                <Search className="w-5 h-5 text-white" />
+              </button>
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-2">
-              <Button
+              <button
                 data-testid="button-use-location"
                 type="button"
-                variant="outline"
-                size="sm"
                 onClick={handleUseLocation}
                 disabled={locating}
-                className="h-9 font-medium flex items-center gap-1.5"
+                className="h-9 px-4 rounded-full text-sm font-medium bg-white/20 hover:bg-white/30 text-white border border-white/40 flex items-center gap-1.5 transition-colors backdrop-blur-sm disabled:opacity-60"
               >
                 {locating ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -200,15 +198,15 @@ export default function Home() {
                   <MapPin className="w-3.5 h-3.5" />
                 )}
                 {locating ? "Locating..." : "Near Me"}
-              </Button>
+              </button>
 
-              {(searchMode === "location") && (
+              {searchMode === "location" && (
                 <div className="flex items-center gap-1.5">
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-white/70" />
                   <Select value={radius} onValueChange={setRadius}>
                     <SelectTrigger
                       data-testid="select-radius"
-                      className="h-9 w-32 text-sm"
+                      className="h-9 w-32 text-sm bg-white/20 border-white/40 text-white backdrop-blur-sm rounded-full"
                     >
                       <SelectValue />
                     </SelectTrigger>
@@ -222,21 +220,19 @@ export default function Home() {
               )}
 
               {isSearchActive && (
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
-                  size="sm"
                   onClick={handleClearSearch}
-                  className="h-9 flex items-center gap-1"
                   data-testid="button-clear-search"
+                  className="h-9 px-4 rounded-full text-sm font-medium bg-white/20 hover:bg-white/30 text-white border border-white/40 flex items-center gap-1.5 transition-colors backdrop-blur-sm"
                 >
                   <X className="w-3.5 h-3.5" /> Clear
-                </Button>
+                </button>
               )}
             </div>
 
             {locationError && (
-              <p className="text-sm text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 px-3 py-2 rounded-md">{locationError}</p>
+              <p className="text-sm text-white bg-red-600/70 border border-red-400/50 px-4 py-2 rounded-full backdrop-blur-sm">{locationError}</p>
             )}
           </form>
         </div>
