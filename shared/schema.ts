@@ -77,6 +77,7 @@ export const places = pgTable("places", {
   phone: text("phone"),
   website: text("website"),
   imageUrl: text("image_url"),
+  photos: text("photos").array(),
   dogPolicy: text("dog_policy").notNull().$type<DogPolicy>(),
   importantInfo: text("important_info"),
   waterBowls: boolean("water_bowls").default(false),
@@ -95,6 +96,7 @@ export const insertPlaceSchema = createInsertSchema(places).omit({ id: true }).e
   category: z.array(z.enum(PLACE_CATEGORIES)).min(1, "Select at least one category"),
   openingHours: openingHoursSchema.nullable().optional(),
   verifiedAt: z.coerce.date().nullable().optional(),
+  photos: z.array(z.string()).max(5).nullable().optional(),
 });
 export type InsertPlace = z.infer<typeof insertPlaceSchema>;
 export type Place = typeof places.$inferSelect;

@@ -123,32 +123,55 @@ export default function PlaceDetail() {
           </Button>
         </Link>
 
-        <div className="relative h-60 md:h-80 rounded-xl overflow-hidden bg-muted mb-6">
-          {place.imageUrl ? (
-            <img
-              src={place.imageUrl}
-              alt={place.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
-            />
-          ) : null}
-          <div className="absolute bottom-4 left-4 flex flex-wrap gap-1.5">
-            {categories.map((cat) => {
-              const Icon = categoryIcons[cat];
-              return (
-                <span
-                  key={cat}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-zinc-700 border border-zinc-300 shadow-sm"
-                >
-                  {Icon && <Icon className="w-3 h-3" />}
-                  {categoryLabel(cat as any)}
-                </span>
-              );
-            })}
-          </div>
-        </div>
+        {(() => {
+          const allPhotos = (place.photos && place.photos.length > 0)
+            ? place.photos
+            : place.imageUrl ? [place.imageUrl] : [];
+          const mainPhoto = allPhotos[0];
+          const extraPhotos = allPhotos.slice(1);
+          return (
+            <div className="mb-6 space-y-2">
+              <div className="relative h-60 md:h-80 rounded-xl overflow-hidden bg-muted">
+                {mainPhoto ? (
+                  <img
+                    src={mainPhoto}
+                    alt={place.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  />
+                ) : null}
+                <div className="absolute bottom-4 left-4 flex flex-wrap gap-1.5">
+                  {categories.map((cat) => {
+                    const Icon = categoryIcons[cat];
+                    return (
+                      <span
+                        key={cat}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-zinc-700 border border-zinc-300 shadow-sm"
+                      >
+                        {Icon && <Icon className="w-3 h-3" />}
+                        {categoryLabel(cat as any)}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+              {extraPhotos.length > 0 && (
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  {extraPhotos.map((src, i) => (
+                    <div key={i} className="shrink-0 h-20 w-28 rounded-lg overflow-hidden bg-muted">
+                      <img
+                        src={src}
+                        alt={`${place.name} photo ${i + 2}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         <div className="flex flex-col gap-6">
           <div>

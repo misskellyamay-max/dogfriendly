@@ -91,6 +91,7 @@ export default function PlaceForm() {
       phone: "",
       website: "",
       imageUrl: "",
+      photos: [""],
       dogPolicy: "dogs_both",
       waterBowls: false,
       dogTreats: false,
@@ -118,6 +119,9 @@ export default function PlaceForm() {
         phone: existing.phone ?? "",
         website: existing.website ?? "",
         imageUrl: existing.imageUrl ?? "",
+        photos: existing.photos && existing.photos.length > 0
+          ? existing.photos
+          : existing.imageUrl ? [existing.imageUrl] : [""],
         dogPolicy: existing.dogPolicy,
         waterBowls: existing.waterBowls ?? false,
         dogTreats: existing.dogTreats ?? false,
@@ -155,7 +159,13 @@ export default function PlaceForm() {
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   function onSubmit(values: FormValues) {
-    const payload = { ...values, openingHours: showOpeningHours ? values.openingHours : null };
+    const cleanedPhotos = (values.photos ?? []).filter(Boolean);
+    const payload = {
+      ...values,
+      photos: cleanedPhotos.length > 0 ? cleanedPhotos : null,
+      imageUrl: cleanedPhotos[0] ?? null,
+      openingHours: showOpeningHours ? values.openingHours : null,
+    };
     if (isEditing) {
       updateMutation.mutate(payload);
     } else {
@@ -489,15 +499,56 @@ export default function PlaceForm() {
                 </FormItem>
               )} />
 
-              <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl>
-                    <Input data-testid="input-image-url" placeholder="https://..." {...field} value={field.value ?? ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+              <div className="space-y-2">
+                <div>
+                  <p className="text-sm font-medium text-foreground">Photos</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Add up to 5 photo URLs. The first photo is used as the main listing image.</p>
+                </div>
+                {(form.watch("photos") ?? [""]).map((url, idx) => (
+                  <div key={idx} className="flex gap-2 items-center">
+                    <Input
+                      data-testid={`input-photo-${idx}`}
+                      placeholder={idx === 0 ? "Main photo URL (https://...)" : `Photo ${idx + 1} URL (optional)`}
+                      value={url}
+                      onChange={(e) => {
+                        const current = [...(form.getValues("photos") ?? [""])];
+                        current[idx] = e.target.value;
+                        form.setValue("photos", current);
+                      }}
+                    />
+                    {idx > 0 && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        data-testid={`button-remove-photo-${idx}`}
+                        className="shrink-0 text-muted-foreground hover:text-destructive"
+                        onClick={() => {
+                          const current = [...(form.getValues("photos") ?? [])];
+                          current.splice(idx, 1);
+                          form.setValue("photos", current);
+                        }}
+                      >
+                        ✕
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                {(form.watch("photos") ?? []).length < 5 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    data-testid="button-add-photo"
+                    onClick={() => {
+                      const current = form.getValues("photos") ?? [""];
+                      form.setValue("photos", [...current, ""]);
+                    }}
+                  >
+                    + Add another photo
+                  </Button>
+                )}
+              </div>
             </section>
 
             <div className="flex gap-3 justify-end">
