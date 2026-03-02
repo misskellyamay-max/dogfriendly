@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import bannerImg from "@assets/Banner_Test_1770164588183.jpg";
 import { useQuery } from "@tanstack/react-query";
 import type { Place, PlaceCategory } from "@shared/schema";
 import { PLACE_CATEGORIES } from "@shared/schema";
@@ -138,7 +139,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative bg-card dark:bg-card border-b-2 border-input">
+      <header className="relative overflow-hidden min-h-[260px] md:min-h-[300px]">
+        <img
+          src={bannerImg}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-white/60" />
         <div className="relative max-w-4xl mx-auto px-4 py-5 md:py-7">
           <div className="flex justify-center mb-1">
             <img
