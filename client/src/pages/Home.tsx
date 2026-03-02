@@ -234,7 +234,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="max-w-screen-xl mx-auto px-4 py-8">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -249,25 +249,29 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="flex items-center gap-2 border border-border rounded-lg p-0.5">
-                <Button
+              <div className="flex gap-2">
+                <button
                   data-testid="button-view-grid"
-                  variant={viewMode === "grid" ? "default" : "ghost"}
-                  size="sm"
                   onClick={() => setViewMode("grid")}
-                  className="h-8 gap-1.5"
+                  className={`rounded-full px-5 py-2 text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                    viewMode === "grid"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                  }`}
                 >
                   <LayoutGrid className="w-4 h-4" /> Grid
-                </Button>
-                <Button
+                </button>
+                <button
                   data-testid="button-view-map"
-                  variant={viewMode === "map" ? "default" : "ghost"}
-                  size="sm"
                   onClick={() => setViewMode("map")}
-                  className="h-8 gap-1.5"
+                  className={`rounded-full px-5 py-2 text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                    viewMode === "map"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                  }`}
                 >
                   <Map className="w-4 h-4" /> Map
-                </Button>
+                </button>
               </div>
             </div>
 
