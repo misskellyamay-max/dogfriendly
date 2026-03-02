@@ -133,7 +133,7 @@ export default function Home() {
   const searchDescription = () => {
     if (searchMode === "location" && locationCoords) return `Within ${radius} mile${radius === "1" ? "" : "s"} of your location`;
     if (searchMode === "text" && submittedQuery) return `Results for "${submittedQuery}"`;
-    return "All dog-friendly places";
+    return null;
   };
 
   return (
@@ -239,7 +239,9 @@ export default function Home() {
           <div className="flex flex-col gap-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-lg font-semibold text-foreground">{searchDescription()}</h2>
+                {searchDescription() && (
+                  <h2 className="text-lg font-semibold text-foreground">{searchDescription()}</h2>
+                )}
                 {places && (
                   <p className="text-sm text-muted-foreground mt-0.5">
                     {places.length} {places.length === 1 ? "place" : "places"} found
@@ -270,26 +272,30 @@ export default function Home() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Button
+              <button
                 data-testid="button-filter-all"
-                variant={selectedCategory === "all" ? "default" : "outline"}
-                size="sm"
                 onClick={() => setSelectedCategory("all")}
-                className="h-8 text-sm"
+                className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+                  selectedCategory === "all"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                }`}
               >
                 All
-              </Button>
+              </button>
               {PLACE_CATEGORIES.map((cat) => (
-                <Button
+                <button
                   key={cat}
                   data-testid={`button-filter-${cat}`}
-                  variant={selectedCategory === cat ? "default" : "outline"}
-                  size="sm"
                   onClick={() => setSelectedCategory(cat)}
-                  className="h-8 text-sm"
+                  className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+                    selectedCategory === cat
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                  }`}
                 >
                   {categoryLabel(cat)}
-                </Button>
+                </button>
               ))}
             </div>
           </div>
