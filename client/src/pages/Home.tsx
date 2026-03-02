@@ -375,7 +375,16 @@ export default function Home() {
               </Button>
             </div>
           ) : viewMode === "map" ? (
-            <MapView places={places ?? []} />
+            <div className="relative">
+              <MapView places={places ?? []} />
+              <button
+                data-testid="button-back-to-list"
+                onClick={() => setViewMode("grid")}
+                className="absolute top-3 right-3 z-[1000] bg-white text-gray-800 shadow-md rounded-full px-4 py-2 text-sm font-medium flex items-center gap-1.5 hover:bg-gray-50 transition-colors border border-gray-200"
+              >
+                <LayoutGrid className="w-4 h-4" /> List view
+              </button>
+            </div>
           ) : (
             <div
               data-testid="grid-places"
