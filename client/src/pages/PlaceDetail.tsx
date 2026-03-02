@@ -11,11 +11,7 @@ import {
   MapPin,
   Phone,
   Globe,
-  Droplets,
-  Cookie,
-  UtensilsCrossed,
   PawPrint,
-  CheckCircle2,
   Dog,
   Utensils,
   Coffee,
@@ -188,8 +184,13 @@ export default function PlaceDetail() {
             )}
           </div>
 
+          <div>
+            <h2 className="font-semibold text-base mb-2">About</h2>
+            <p className="text-muted-foreground leading-relaxed">{place.description}</p>
+          </div>
+
           <div className="bg-card border border-card-border rounded-xl p-5">
-            <h2 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground mb-3 flex items-center gap-2">
+            <h2 className="font-semibold text-sm text-muted-foreground mb-3 flex items-center gap-2">
               <Dog className="w-4 h-4" /> Dog Welcome Policy
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -200,40 +201,6 @@ export default function PlaceDetail() {
                 {dogPolicyLabel(place.dogPolicy as any)}
               </span>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
-              <div className={`flex items-center gap-2 p-3 rounded-lg border ${place.waterBowls ? "border-sky-200 bg-sky-50 dark:border-sky-800 dark:bg-sky-950/30" : "border-border bg-muted/40 opacity-50"}`}>
-                <Droplets className={`w-4 h-4 ${place.waterBowls ? "text-sky-600 dark:text-sky-400" : "text-muted-foreground"}`} />
-                <div>
-                  <p className="text-sm font-medium">Water Bowls</p>
-                  <p className="text-xs text-muted-foreground">{place.waterBowls ? "Provided" : "Not available"}</p>
-                </div>
-                {place.waterBowls && <CheckCircle2 className="w-4 h-4 text-sky-600 dark:text-sky-400 ml-auto" />}
-              </div>
-
-              <div className={`flex items-center gap-2 p-3 rounded-lg border ${place.dogTreats ? "border-rose-200 bg-rose-50 dark:border-rose-800 dark:bg-rose-950/30" : "border-border bg-muted/40 opacity-50"}`}>
-                <Cookie className={`w-4 h-4 ${place.dogTreats ? "text-rose-600 dark:text-rose-400" : "text-muted-foreground"}`} />
-                <div>
-                  <p className="text-sm font-medium">Dog Treats</p>
-                  <p className="text-xs text-muted-foreground">{place.dogTreats ? "Available" : "Not available"}</p>
-                </div>
-                {place.dogTreats && <CheckCircle2 className="w-4 h-4 text-rose-600 dark:text-rose-400 ml-auto" />}
-              </div>
-
-              <div className={`flex items-center gap-2 p-3 rounded-lg border ${place.dogMenu ? "border-violet-200 bg-violet-50 dark:border-violet-800 dark:bg-violet-950/30" : "border-border bg-muted/40 opacity-50"}`}>
-                <UtensilsCrossed className={`w-4 h-4 ${place.dogMenu ? "text-violet-600 dark:text-violet-400" : "text-muted-foreground"}`} />
-                <div>
-                  <p className="text-sm font-medium">Dog Menu</p>
-                  <p className="text-xs text-muted-foreground">{place.dogMenu ? "Available" : "Not available"}</p>
-                </div>
-                {place.dogMenu && <CheckCircle2 className="w-4 h-4 text-violet-600 dark:text-violet-400 ml-auto" />}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="font-semibold text-base mb-2">About</h2>
-            <p className="text-muted-foreground leading-relaxed">{place.description}</p>
           </div>
 
           {place.importantInfo && (

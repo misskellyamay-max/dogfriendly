@@ -93,9 +93,6 @@ export default function PlaceForm() {
       imageUrl: "",
       photos: [""],
       dogPolicy: "dogs_both",
-      waterBowls: false,
-      dogTreats: false,
-      dogMenu: false,
       latitude: 51.5,
       longitude: -1.8,
       rating: 4.0,
@@ -123,9 +120,6 @@ export default function PlaceForm() {
           ? existing.photos
           : existing.imageUrl ? [existing.imageUrl] : [""],
         dogPolicy: existing.dogPolicy,
-        waterBowls: existing.waterBowls ?? false,
-        dogTreats: existing.dogTreats ?? false,
-        dogMenu: existing.dogMenu ?? false,
         latitude: existing.latitude,
         longitude: existing.longitude,
         rating: existing.rating,
@@ -378,34 +372,6 @@ export default function PlaceForm() {
                 </FormItem>
               )} />
 
-              <div className="space-y-3">
-                <FormField control={form.control} name="waterBowls" render={({ field }) => (
-                  <FormItem className="flex items-center gap-3 space-y-0">
-                    <FormControl>
-                      <Checkbox data-testid="check-water-bowls" checked={field.value ?? false} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel className="font-normal cursor-pointer">Water bowls provided</FormLabel>
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="dogTreats" render={({ field }) => (
-                  <FormItem className="flex items-center gap-3 space-y-0">
-                    <FormControl>
-                      <Checkbox data-testid="check-dog-treats" checked={field.value ?? false} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel className="font-normal cursor-pointer">Dog treats available</FormLabel>
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="dogMenu" render={({ field }) => (
-                  <FormItem className="flex items-center gap-3 space-y-0">
-                    <FormControl>
-                      <Checkbox data-testid="check-dog-menu" checked={field.value ?? false} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel className="font-normal cursor-pointer">Dog menu available</FormLabel>
-                  </FormItem>
-                )} />
-              </div>
             </section>
 
             <section className="bg-card border border-border rounded-xl p-5 space-y-4">

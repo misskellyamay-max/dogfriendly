@@ -3,11 +3,12 @@ import { useLocation, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useAdmin } from "@/hooks/useAdmin";
 import type { Place } from "@shared/schema";
-import { PlusCircle, Pencil, Trash2, LogOut, Upload, ShieldCheck } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, LogOut, Upload, ShieldCheck, Search } from "lucide-react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   restaurant: "Restaurant",
@@ -25,9 +26,16 @@ export default function AdminPlaces() {
   const { toast } = useToast();
   const { isLoading: authLoading } = useAdmin();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
 
   const { data: places = [], isLoading } = useQuery<Place[]>({
     queryKey: ["/api/places"],
+  });
+
+  const filteredPlaces = places.filter(p => {
+    const q = search.toLowerCase().trim();
+    if (!q) return true;
+    return p.name.toLowerCase().includes(q) || p.town.toLowerCase().includes(q);
   });
 
   const deleteMutation = useMutation({
@@ -106,7 +114,21 @@ export default function AdminPlaces() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-6">
-        <p className="text-sm text-muted-foreground mb-4">{places.length} listing{places.length !== 1 ? "s" : ""}</p>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <Input
+              data-testid="input-admin-search"
+              placeholder="Search by name or town…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {filteredPlaces.length}{search ? ` of ${places.length}` : ""} listing{places.length !== 1 ? "s" : ""}
+          </p>
+        </div>
         <div className="bg-card border border-border rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead className="border-b border-border bg-muted/40">
@@ -120,7 +142,7 @@ export default function AdminPlaces() {
               </tr>
             </thead>
             <tbody>
-              {places.map((place, i) => (
+              {filteredPlaces.map((place, i) => (
                 <tr
                   key={place.id}
                   data-testid={`row-place-${place.id}`}
@@ -197,10 +219,10 @@ export default function AdminPlaces() {
                   </td>
                 </tr>
               ))}
-              {places.length === 0 && (
+              {filteredPlaces.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">
-                    No listings yet. Add your first one.
+                  <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
+                    {search ? `No listings match "${search}".` : "No listings yet. Add your first one."}
                   </td>
                 </tr>
               )}
