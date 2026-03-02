@@ -58,7 +58,9 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<PlaceCategory | "all">("all");
   const [searchMode, setSearchMode] = useState<SearchMode>("browse");
   const [locating, setLocating] = useState(false);
+  const [geocoding, setGeocoding] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [postcodeLabel, setPostcodeLabel] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
   const buildSearchUrl = useCallback(() => {
@@ -83,13 +85,41 @@ export default function Home() {
     },
   });
 
-  function handleSearch(e: React.FormEvent) {
+  async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    if (!searchInput.trim()) return;
-    setLocationCoords(null);
-    setSubmittedQuery(searchInput.trim());
-    setSearchMode("text");
-    setLocationError(null);
+    const query = searchInput.trim();
+    if (!query) return;
+
+    const isPostcode = /^[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}$/i.test(query) ||
+      /^[A-Z]{1,2}[0-9][0-9A-Z]?$/i.test(query);
+
+    if (isPostcode) {
+      const normalised = query.replace(/\s+/g, "").toUpperCase();
+      setGeocoding(true);
+      setLocationError(null);
+      try {
+        const res = await fetch(`https://api.postcodes.io/postcodes/${normalised}`);
+        const data = await res.json();
+        if (data.status === 200 && data.result) {
+          setLocationCoords({ lat: data.result.latitude, lon: data.result.longitude });
+          setPostcodeLabel(query.toUpperCase());
+          setSearchMode("location");
+          setSubmittedQuery("");
+        } else {
+          setLocationError("Postcode not found. Please check and try again.");
+        }
+      } catch {
+        setLocationError("Could not look up postcode. Please check your connection and try again.");
+      } finally {
+        setGeocoding(false);
+      }
+    } else {
+      setLocationCoords(null);
+      setPostcodeLabel(null);
+      setSubmittedQuery(query);
+      setSearchMode("text");
+      setLocationError(null);
+    }
   }
 
   function handleUseLocation() {
@@ -105,6 +135,7 @@ export default function Home() {
         setSearchMode("location");
         setSubmittedQuery("");
         setSearchInput("");
+        setPostcodeLabel(null);
         setLocating(false);
       },
       (err) => {
@@ -118,6 +149,7 @@ export default function Home() {
     setSearchInput("");
     setSubmittedQuery("");
     setLocationCoords(null);
+    setPostcodeLabel(null);
     setSearchMode("browse");
     setLocationError(null);
   }
@@ -132,7 +164,10 @@ export default function Home() {
   }));
 
   const searchDescription = () => {
-    if (searchMode === "location" && locationCoords) return `Within ${radius} mile${radius === "1" ? "" : "s"} of your location`;
+    if (searchMode === "location" && locationCoords) {
+      const label = postcodeLabel ?? "your location";
+      return `Within ${radius} mile${radius === "1" ? "" : "s"} of ${label}`;
+    }
     if (searchMode === "text" && submittedQuery) return `Results for "${submittedQuery}"`;
     return null;
   };
@@ -177,10 +212,14 @@ export default function Home() {
               <button
                 data-testid="button-search"
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75 shadow-md"
+                disabled={geocoding}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75 shadow-md disabled:opacity-70"
                 style={{ backgroundColor: "#ff9900" }}
               >
-                <Search className="w-5 h-5 text-white" />
+                {geocoding
+                  ? <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  : <Search className="w-5 h-5 text-white" />
+                }
               </button>
             </div>
 
