@@ -114,11 +114,27 @@ export default function Home() {
         setGeocoding(false);
       }
     } else {
-      setLocationCoords(null);
-      setPostcodeLabel(null);
-      setSubmittedQuery(query);
-      setSearchMode("text");
+      setGeocoding(true);
       setLocationError(null);
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&countrycodes=gb&format=json&limit=1`,
+          { headers: { "Accept-Language": "en" } }
+        );
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setLocationCoords({ lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) });
+          setPostcodeLabel(query);
+          setSearchMode("location");
+          setSubmittedQuery("");
+        } else {
+          setLocationError("Town not found. Please check the spelling or try a nearby postcode instead.");
+        }
+      } catch {
+        setLocationError("Could not look up that location. Please check your connection and try again.");
+      } finally {
+        setGeocoding(false);
+      }
     }
   }
 
