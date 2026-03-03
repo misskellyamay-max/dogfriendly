@@ -24,6 +24,7 @@ import {
   Clock,
   ShieldCheck,
   CreditCard,
+  Info,
   type LucideIcon,
 } from "lucide-react";
 
@@ -227,7 +228,7 @@ export default function PlaceDetail() {
                     href={place.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-primary hover:underline underline-offset-2 transition-colors"
+                    className="flex items-center gap-2 text-sm text-foreground hover:underline underline-offset-2 transition-colors"
                   >
                     <Globe className="w-3.5 h-3.5" />
                     {place.website.replace(/^https?:\/\//, "")}
@@ -265,14 +266,14 @@ export default function PlaceDetail() {
           </div>
         )}
 
-        {/* Content sections — left-aligned, below the hero */}
-        <div className="md:max-w-[calc(100%-18rem)] flex flex-col gap-5">
+        {/* Content sections — full width, below the hero */}
+        <div className="flex flex-col gap-5">
 
           {/* About */}
-          <div>
-            <h2 className="font-semibold text-base mb-2">About</h2>
+          <SectionCard>
+            <SectionTitle icon={Info}>About</SectionTitle>
             <p className="text-muted-foreground leading-relaxed">{place.description}</p>
-          </div>
+          </SectionCard>
 
           {/* Dog Welcome Policy */}
           <SectionCard>
