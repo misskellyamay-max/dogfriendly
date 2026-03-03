@@ -3,7 +3,7 @@ import { categoryLabel, dogPolicyLabel } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   MapPin, Droplets, Cookie, UtensilsCrossed,
-  Utensils, Coffee, Beer, ShoppingBag, BedDouble, Trees, Waves, Ticket, type LucideIcon
+  Utensils, Coffee, Beer, ShoppingBag, BedDouble, Trees, Waves, Ticket, CreditCard, type LucideIcon
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -107,6 +107,15 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
             {place.dogMenu && (
               <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-md bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300 font-medium">
                 <UtensilsCrossed className="w-3 h-3" /> Dog Menu
+              </span>
+            )}
+            {categories.includes("hotel") && place.dogChargeAmount != null && (
+              <span
+                data-testid={`badge-pet-fee-${place.id}`}
+                className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 font-medium"
+              >
+                <CreditCard className="w-3 h-3" />
+                Pet fee: £{place.dogChargeAmount % 1 === 0 ? place.dogChargeAmount : place.dogChargeAmount.toFixed(2)} per dog/night
               </span>
             )}
           </div>
