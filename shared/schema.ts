@@ -90,6 +90,7 @@ export const places = pgTable("places", {
   openingHours: jsonb("opening_hours").$type<OpeningHours>(),
   hotelInfo: text("hotel_info"),
   dogCharge: boolean("dog_charge").default(false),
+  dogChargeAmount: real("dog_charge_amount"),
   maxDogs: integer("max_dogs"),
   verified: boolean("verified").default(false).notNull(),
   verifiedAt: timestamp("verified_at"),

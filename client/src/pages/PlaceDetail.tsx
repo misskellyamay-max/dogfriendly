@@ -205,7 +205,7 @@ export default function PlaceDetail() {
           </div>
 
           {(Array.isArray(place.category) ? place.category : [place.category]).includes("hotel") &&
-            (place.hotelInfo || place.dogCharge || place.maxDogs != null) && (
+            (place.hotelInfo || place.dogCharge || place.dogChargeAmount != null || place.maxDogs != null) && (
             <div
               data-testid="section-hotel-policy"
               className="bg-card border border-card-border rounded-xl p-5 space-y-4"
@@ -219,13 +219,17 @@ export default function PlaceDetail() {
               )}
 
               <div className="flex flex-wrap gap-3">
-                {place.dogCharge && (
+                {(place.dogCharge || place.dogChargeAmount != null) && (
                   <div
                     data-testid="badge-dog-charge"
                     className="flex items-center gap-2 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2"
                   >
                     <CreditCard className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                    <span className="text-sm font-medium text-amber-800 dark:text-amber-300">Additional charge per dog applies</span>
+                    <span className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                      {place.dogChargeAmount != null
+                        ? `£${place.dogChargeAmount % 1 === 0 ? place.dogChargeAmount : place.dogChargeAmount.toFixed(2)} per dog, per night`
+                        : "Additional charge per dog applies"}
+                    </span>
                   </div>
                 )}
                 {place.maxDogs != null && (

@@ -95,6 +95,7 @@ export default function PlaceForm() {
       dogPolicy: "dogs_both",
       hotelInfo: "",
       dogCharge: false,
+      dogChargeAmount: undefined,
       maxDogs: undefined,
       latitude: 51.5,
       longitude: -1.8,
@@ -125,6 +126,7 @@ export default function PlaceForm() {
         dogPolicy: existing.dogPolicy,
         hotelInfo: existing.hotelInfo ?? "",
         dogCharge: existing.dogCharge ?? false,
+        dogChargeAmount: existing.dogChargeAmount ?? undefined,
         maxDogs: existing.maxDogs ?? undefined,
         latitude: existing.latitude,
         longitude: existing.longitude,
@@ -410,6 +412,25 @@ export default function PlaceForm() {
                       />
                     </FormControl>
                     <FormLabel className="font-normal cursor-pointer">Additional charge per dog applies</FormLabel>
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="dogChargeAmount" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cost per dog, per night (£)</FormLabel>
+                    <FormControl>
+                      <Input
+                        data-testid="input-dog-charge-amount"
+                        type="number"
+                        min={0}
+                        step={0.01}
+                        placeholder="e.g. 15"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={e => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )} />
 
