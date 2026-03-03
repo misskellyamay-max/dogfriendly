@@ -93,6 +93,9 @@ export default function PlaceForm() {
       imageUrl: "",
       photos: [""],
       dogPolicy: "dogs_both",
+      hotelInfo: "",
+      dogCharge: false,
+      maxDogs: undefined,
       latitude: 51.5,
       longitude: -1.8,
       rating: 4.0,
@@ -120,6 +123,9 @@ export default function PlaceForm() {
           ? existing.photos
           : existing.imageUrl ? [existing.imageUrl] : [""],
         dogPolicy: existing.dogPolicy,
+        hotelInfo: existing.hotelInfo ?? "",
+        dogCharge: existing.dogCharge ?? false,
+        maxDogs: existing.maxDogs ?? undefined,
         latitude: existing.latitude,
         longitude: existing.longitude,
         rating: existing.rating,
@@ -373,6 +379,59 @@ export default function PlaceForm() {
               )} />
 
             </section>
+
+            {form.watch("category")?.includes("hotel") && (
+              <section className="bg-card border border-border rounded-xl p-5 space-y-4">
+                <h2 className="font-semibold text-foreground">Hotel Stay Policy</h2>
+
+                <FormField control={form.control} name="hotelInfo" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Important Information</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        data-testid="input-hotel-info"
+                        placeholder="e.g. Dogs must not be left unattended in rooms. Charge applies per night."
+                        rows={3}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="dogCharge" render={({ field }) => (
+                  <FormItem className="flex items-center gap-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        data-testid="check-dog-charge"
+                        checked={field.value ?? false}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="font-normal cursor-pointer">Additional charge per dog applies</FormLabel>
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="maxDogs" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Maximum Dogs</FormLabel>
+                    <FormControl>
+                      <Input
+                        data-testid="input-max-dogs"
+                        type="number"
+                        min={1}
+                        placeholder="e.g. 2"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={e => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              </section>
+            )}
 
             <section className="bg-card border border-border rounded-xl p-5 space-y-4">
               <div className="flex items-center justify-between">

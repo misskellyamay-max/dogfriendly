@@ -23,6 +23,7 @@ import {
   Ticket,
   Clock,
   ShieldCheck,
+  CreditCard,
   type LucideIcon,
 } from "lucide-react";
 
@@ -202,6 +203,43 @@ export default function PlaceDetail() {
               </span>
             </div>
           </div>
+
+          {(Array.isArray(place.category) ? place.category : [place.category]).includes("hotel") &&
+            (place.hotelInfo || place.dogCharge || place.maxDogs != null) && (
+            <div
+              data-testid="section-hotel-policy"
+              className="bg-card border border-card-border rounded-xl p-5 space-y-4"
+            >
+              <h2 className="font-semibold text-sm text-muted-foreground flex items-center gap-2">
+                <BedDouble className="w-4 h-4" /> Hotel Stay Policy
+              </h2>
+
+              {place.hotelInfo && (
+                <p className="text-sm text-foreground leading-relaxed">{place.hotelInfo}</p>
+              )}
+
+              <div className="flex flex-wrap gap-3">
+                {place.dogCharge && (
+                  <div
+                    data-testid="badge-dog-charge"
+                    className="flex items-center gap-2 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2"
+                  >
+                    <CreditCard className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                    <span className="text-sm font-medium text-amber-800 dark:text-amber-300">Additional charge per dog applies</span>
+                  </div>
+                )}
+                {place.maxDogs != null && (
+                  <div
+                    data-testid="badge-max-dogs"
+                    className="flex items-center gap-2 bg-muted border border-border rounded-lg px-3 py-2"
+                  >
+                    <PawPrint className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">Maximum {place.maxDogs} {place.maxDogs === 1 ? "dog" : "dogs"}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {place.importantInfo && (
             <div
