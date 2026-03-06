@@ -19,6 +19,7 @@ import {
   Loader2,
   LayoutGrid,
   Map,
+  Crosshair,
 } from "lucide-react";
 
 
@@ -60,6 +61,7 @@ export default function Home() {
   const [locating, setLocating] = useState(false);
   const [geocoding, setGeocoding] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [postcodeLabel, setPostcodeLabel] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
@@ -87,8 +89,14 @@ export default function Home() {
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
+    setShowDropdown(false);
     const query = searchInput.trim();
     if (!query) return;
+
+    if (query.toLowerCase() === "current location" && locationCoords) {
+      setSearchMode("location");
+      return;
+    }
 
     const isPostcode = /^[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}$/i.test(query) ||
       /^[A-Z]{1,2}[0-9][0-9A-Z]?$/i.test(query);
@@ -150,9 +158,10 @@ export default function Home() {
         setLocationCoords({ lat: pos.coords.latitude, lon: pos.coords.longitude });
         setSearchMode("location");
         setSubmittedQuery("");
-        setSearchInput("");
+        setSearchInput("Current Location");
         setPostcodeLabel(null);
         setLocating(false);
+        setShowDropdown(false);
       },
       (err) => {
         setLocationError("Unable to get your location. Please check your browser permissions.");
@@ -222,7 +231,10 @@ export default function Home() {
                 type="search"
                 placeholder="Town, city or postcode..."
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                onChange={(e) => { setSearchInput(e.target.value); setShowDropdown(true); }}
+                onFocus={() => setShowDropdown(true)}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+                onKeyDown={(e) => { if (e.key === "Escape") setShowDropdown(false); }}
                 className="pl-6 pr-16 h-16 text-base bg-white text-foreground placeholder:text-muted-foreground border-0 rounded-full shadow-2xl focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
@@ -237,24 +249,30 @@ export default function Home() {
                   : <Search className="w-5 h-5 text-white" />
                 }
               </button>
+
+              {showDropdown && (
+                <div className="absolute top-full mt-2 left-0 right-0 bg-white rounded-2xl shadow-xl border border-border z-50 overflow-hidden">
+                  <button
+                    type="button"
+                    data-testid="button-use-location"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => { handleUseLocation(); setShowDropdown(false); }}
+                    disabled={locating}
+                    className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted/60 transition-colors text-left disabled:opacity-60"
+                  >
+                    {locating
+                      ? <Loader2 className="w-5 h-5 text-primary animate-spin flex-shrink-0" />
+                      : <Crosshair className="w-5 h-5 text-primary flex-shrink-0" />
+                    }
+                    <span className="text-sm font-semibold text-foreground">
+                      {locating ? "Detecting location..." : "Current Location"}
+                    </span>
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-2">
-              <button
-                data-testid="button-use-location"
-                type="button"
-                onClick={handleUseLocation}
-                disabled={locating}
-                className="h-9 px-4 rounded-full text-sm font-medium bg-white/20 hover:bg-white/30 text-white border border-white/40 flex items-center gap-1.5 transition-colors backdrop-blur-sm disabled:opacity-60"
-              >
-                {locating ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <MapPin className="w-3.5 h-3.5" />
-                )}
-                {locating ? "Locating..." : "Near Me"}
-              </button>
-
               {searchMode === "location" && (
                 <div className="flex items-center gap-1.5">
                   <SlidersHorizontal className="w-3.5 h-3.5 text-white/70" />
