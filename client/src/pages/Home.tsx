@@ -208,7 +208,7 @@ export default function Home() {
 
           <div className="text-center space-y-3">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-md leading-tight tracking-tight">
-              Find your next dog-friendly adventure.
+              Find your next dog friendly adventure.
             </h1>
             <p className="text-white/90 text-lg md:text-xl drop-shadow">
               Restaurants, pubs, cafés, hotels, shops and more
