@@ -38,9 +38,9 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
     <Link href={`/place/${place.id}`}>
       <Card
         data-testid={`card-place-${place.id}`}
-        className="cursor-pointer hover-elevate transition-all duration-200 h-full flex flex-col"
+        className="cursor-pointer rounded-2xl overflow-hidden border-0 shadow-md hover:shadow-xl transition-shadow duration-200 h-full flex flex-col"
       >
-        <div className="relative h-44 w-full overflow-hidden rounded-t-lg bg-muted flex-shrink-0">
+        <div className="relative h-52 w-full overflow-hidden bg-muted flex-shrink-0">
           {place.imageUrl ? (
             <img
               src={place.imageUrl}
@@ -57,7 +57,7 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
               return (
                 <span
                   key={cat}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md bg-white text-zinc-700 border border-zinc-300 shadow-sm"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/95 text-zinc-700 shadow-sm"
                 >
                   {Icon && <Icon className="w-3 h-3" />}
                   {categoryLabel(cat as any)}
@@ -76,7 +76,7 @@ export function PlaceCard({ place, distance }: PlaceCardProps) {
 
         <CardContent className="p-4 flex flex-col flex-1 gap-2">
           <div>
-            <h3 data-testid={`text-place-name-${place.id}`} className="font-semibold text-base leading-tight line-clamp-1">
+            <h3 data-testid={`text-place-name-${place.id}`} className="font-bold text-lg leading-tight line-clamp-1">
               {place.name}
             </h3>
             <div className="flex items-center gap-1 mt-1 text-muted-foreground text-sm">

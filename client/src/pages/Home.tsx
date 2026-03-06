@@ -190,15 +190,15 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative overflow-hidden min-h-[380px] md:min-h-[440px] flex items-center">
+      <header className="relative overflow-hidden min-h-[460px] md:min-h-[520px] flex items-center">
         <img
           src={bannerImg}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
-        <div className="relative w-full max-w-3xl mx-auto px-4 py-10 flex flex-col items-center gap-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-900/80 via-orange-800/50 to-black/70" />
+        <div className="relative w-full max-w-3xl mx-auto px-4 py-10 flex flex-col items-center gap-6">
 
           <img
             src="/houndsabout-logo2.png"
@@ -206,11 +206,11 @@ export default function Home() {
             className="h-16 md:h-20 w-auto object-contain drop-shadow-lg"
           />
 
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-md leading-tight">
-              Find dog friendly spots near you
+          <div className="text-center space-y-3">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-md leading-tight tracking-tight">
+              Find your next dog-friendly adventure.
             </h1>
-            <p className="text-white/85 text-base md:text-lg drop-shadow">
+            <p className="text-white/90 text-lg md:text-xl drop-shadow">
               Restaurants, pubs, cafés, hotels, shops and more
             </p>
           </div>
@@ -223,13 +223,13 @@ export default function Home() {
                 placeholder="Town, city or postcode..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="pl-6 pr-16 h-14 text-base bg-white text-foreground placeholder:text-muted-foreground border-0 rounded-full shadow-xl focus-visible:ring-2 focus-visible:ring-primary"
+                className="pl-6 pr-16 h-16 text-base bg-white text-foreground placeholder:text-muted-foreground border-0 rounded-full shadow-2xl focus-visible:ring-2 focus-visible:ring-primary"
               />
               <button
                 data-testid="button-search"
                 type="submit"
                 disabled={geocoding}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75 shadow-md disabled:opacity-70"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-opacity hover:opacity-90 active:opacity-75 shadow-md disabled:opacity-70"
                 style={{ backgroundColor: "#ff9900" }}
               >
                 {geocoding
@@ -293,9 +293,8 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-screen-xl mx-auto px-4 py-8">
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
+      <main className="max-w-screen-xl mx-auto px-4">
+        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border py-4 -mx-4 px-4 flex flex-col gap-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 {searchDescription() && (
@@ -315,7 +314,7 @@ export default function Home() {
                   className={`rounded-full px-5 py-2 text-sm font-medium transition-colors flex items-center gap-1.5 ${
                     viewMode === "grid"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                      : "bg-white dark:bg-zinc-800 border border-border text-foreground hover:border-primary hover:text-primary transition-colors"
                   }`}
                 >
                   <LayoutGrid className="w-4 h-4" /> Grid
@@ -326,7 +325,7 @@ export default function Home() {
                   className={`rounded-full px-5 py-2 text-sm font-medium transition-colors flex items-center gap-1.5 ${
                     viewMode === "map"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                      : "bg-white dark:bg-zinc-800 border border-border text-foreground hover:border-primary hover:text-primary transition-colors"
                   }`}
                 >
                   <Map className="w-4 h-4" /> Map
@@ -341,7 +340,7 @@ export default function Home() {
                 className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
                   selectedCategory === "all"
                     ? "bg-primary text-primary-foreground"
-                    : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                    : "bg-white dark:bg-zinc-800 border border-border text-foreground hover:border-primary hover:text-primary transition-colors"
                 }`}
               >
                 All
@@ -354,7 +353,7 @@ export default function Home() {
                   className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
                     selectedCategory === cat
                       ? "bg-primary text-primary-foreground"
-                      : "bg-gray-100 dark:bg-zinc-800 text-foreground hover:bg-gray-200 dark:hover:bg-zinc-700"
+                      : "bg-white dark:bg-zinc-800 border border-border text-foreground hover:border-primary hover:text-primary transition-colors"
                   }`}
                 >
                   {categoryLabel(cat)}
@@ -363,6 +362,7 @@ export default function Home() {
             </div>
           </div>
 
+          <div className="py-6">
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
